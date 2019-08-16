@@ -1,0 +1,11 @@
+<li [attr.class]="has_children?'with_children':'no_children'">
+    <a *ngIf="has_children" (click)="onClick()"  [ngClass]="{'active': checkRoute() && title === 'Groups'}">
+        {{title}}<i class="material-icons">keyboard_arrow_down</i>
+    </a>
+    <a *ngIf="!has_children" [routerLink]="routerLink">
+        {{title}}
+    </a>
+    <ul #contentWrapper *ngIf="has_children" [attr.class]="this.is_expanded?'open':'close'">
+        <ng-content></ng-content>
+    </ul>
+</li>

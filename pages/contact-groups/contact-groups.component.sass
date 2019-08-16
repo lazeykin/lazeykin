@@ -1,0 +1,242 @@
+@import "~app/sass_inc/all"
+
+.removeItem
+  width: 15px
+  height: 15px
+  margin-right: 6px
+
+.delete_item
+  cursor: pointer
+  color: #0275d8
+
+.panel-filters
+  position: relative
+  padding: 12px 22px
+  background-color: #fff
+  display: flex
+  text-align: right
+  margin-bottom: 10px
+
+@import "~app/sass_inc/all"
+
+.hidden
+  display: none
+
+.pagination_holder
+  text-align: right
+  padding: 20px
+
+.panel-filters
+  padding: 12px 22px
+  background-color: $white
+  display: flex
+  text-align: right
+  margin-bottom: 10px
+  padding-left: 42px
+
+.search
+  width: 300px
+
+  input
+    font-size: 12px
+    height: 30px
+
+  button
+    background: #b8bfd3
+    color: white
+    border-radius: 0 2px 2px 0
+    border: 0
+    font-size: 12px
+    height: 30px
+    padding: 5px 10px
+    width: 42px
+    &:hover 
+      cursor: pointer
+    i
+      font-size: 1.6em
+.placeholder-text 
+  margin-top: -20px
+
+  
+.search-clear
+  height: 12px
+  font-size: 12px
+  line-height: 30px
+  display: inline-block
+  margin-left: 22px
+  text-transform: uppercase
+  text-decoration: underline !important
+  cursor: pointer
+  letter-spacing: 2px
+  font-size: 12px 
+  font-weight: 600 
+  letter-spacing: 2px 
+  transition: .2s ease all
+  &:hover 
+    text-decoration: none !important
+
+.add_group
+  position: absolute
+  right: 30px
+  background-color: #43b05c
+  color: #fff
+  text-transform: uppercase
+  font-size: 12px
+  border: none
+  padding: 5px
+  width: 128px
+  height: 30px 
+  border-radius: 2px
+  font-weight: 600
+  &:hover 
+    cursor: pointer
+
+.table_wrapper
+  background-color: #FFFFFF
+  // padding: 25px 5px
+  margin-bottom: 40px
+  box-shadow: 0 0 6px 0 rgba(184, 191, 211, 0.5)
+
+.description
+  max-width: 350px 
+  margin-right: 84px
+  font-size: 12px
+  padding: 10px 0
+  overflow: hidden
+  display: block
+  color: #33333a
+  .descr-wrapper 
+    height: 100% 
+    padding: 10px 0
+    display: flex 
+    align-items: center
+    // overflow: hidden
+
+table 
+  width: 100%
+td 
+  height: 75px
+  color: #33333a
+  &:first-child 
+    padding-left: 11px
+    padding-top: 5px
+    width: 20px
+    max-width: 20px
+  &:nth-child(2)
+    padding-left: 34px
+  a, &.delete_item
+    text-transform: uppercase
+    font-size: 12px
+    font-weight: 600
+    font-style: normal
+    font-stretch: normal
+    line-height: normal
+    letter-spacing: 2px
+    color: #4099d5
+.name
+  width: 170px
+  max-width: 170px
+  padding-right: 10px
+  font-size: 18px
+  font-weight: 600
+  max-width: 120px
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+  color: #33333a
+
+tr
+  border-bottom: 1px solid rgba(237, 239, 244, 0.5)
+
+.members
+  font-weight: 600
+  font-size: 16px
+  width: 195px
+  color: #33333a
+
+.group_action
+  box-shadow: 0 -2px 4px 0 rgba(184, 191, 211, 0.5)
+  width: 75.5%
+  background-color: #fff
+  bottom: 0
+  padding: 15px
+  display: flex
+  p 
+    margin-bottom: 0
+    line-height: 40px
+    width: 230px
+
+.items_number
+  width: 20%
+  font-size: 18px
+  color: #515356
+  font-weight: 600
+  letter-spacing: 1.8px
+
+.delete_button
+  width: 154px
+  height: 40px
+  border: 1px solid #d0021b
+  background-color: #fff
+  text-transform: uppercase
+  color: #d0021b
+  font-size: 12px
+  border-radius: 2px
+  font-weight: 600
+  letter-spacing: 2px
+  transition: .2s ease all
+  &:hover 
+    background-color: #f9e5e5
+  &:hover, &:focus
+    cursor: pointer
+    outline: none
+.delete_item 
+  padding-right: 41px
+  text-align: right
+
+.delete_item, .edit_item 
+  width: 120px 
+  text-align: right
+  line-height: 16px
+  overflow: hidden 
+  text-overflow: ellipsis
+  white-space: nowrap
+
+.edit_item 
+  padding-right: 32px
+  a
+    &:hover 
+      text-decoration: none !important
+
+.custom-control.fill-checkbox .fill-control-input:checked ~ .fill-control-indicator
+  background-color: #4099d5
+  border-color: #4099d5
+
+.custom-control 
+  &.fill-checkbox 
+    --color: #b8bfd3
+    .fill-control-indicator 
+      border: 1px solid #b8bfd3
+      border-radius: 2px
+
+.pagination-wrapper 
+  width: 100%
+  position: relative 
+  height: 130px
+  app-pagination
+    position: absolute
+    right: 0
+    top: 0
+
+.action-wrapper 
+  width: 100%
+  height: 80px
+  max-width: 1065px
+  position: absolute
+  bottom: 0
+  .group_action
+    width: 100%
+    position: relative
+    height: 100%
+    display: flex
+    align-items: center

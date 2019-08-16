@@ -1,0 +1,40 @@
+<!--<div>-->
+  <!--<span *ngFor="let i of range(1, totalPages + 1)">-->
+      <!--<a [routerLink]="" [queryParams]="getRouteLinkParams(i)"-->
+         <!--queryParamsHandling="merge" preserveFragment="true"-->
+         <!--[ngClass]="(currentPage == i)?'active':''">{{i}}</a>&nbsp;-->
+      <!--&lt;!&ndash;in some cases url will not match href (path?page=1 === path)&ndash;&gt;-->
+      <!--&lt;!&ndash;[routerLinkActive]="['active']" &ndash;&gt;-->
+  <!--</span>-->
+<!--</div>-->
+
+<ul *ngIf="totalPages && totalPages > 1">
+
+    <li class="previous" *ngIf="currentPage > 1">
+        <a [queryParams]="getRouteLinkParams(currentPage - 1)"
+           class="pagination_link" [routerLink]="" queryParamsHandling="merge" preserveFragment="true"></a>
+    </li>
+
+    <li [ngClass]="{'active':currentPage === 1}">
+        <a [queryParams]="getRouteLinkParams(1)"
+           class="pagination_link" [routerLink]="" queryParamsHandling="merge" preserveFragment="true">1</a>
+
+    <li *ngIf="currentPage - 2 > 2">...</li>
+
+    <li *ngFor="let i of pageRange(currentPage - 2, currentPage + 2 + 1)"
+        [ngClass]="{'active':currentPage === i}">
+        <a [queryParams]="getRouteLinkParams(i)"
+           class="pagination_link" [routerLink]="" queryParamsHandling="merge" preserveFragment="true">{{i}}</a>
+
+    <li *ngIf="currentPage + 2 + 1 < totalPages">...</li>
+
+
+    <li [ngClass]="{'active':currentPage === totalPages}">
+        <a [queryParams]="getRouteLinkParams(totalPages)"
+           class="pagination_link" [routerLink]="" queryParamsHandling="merge" preserveFragment="true">{{totalPages}}</a>
+
+    <li class="next" *ngIf="currentPage < totalPages">
+        <a [queryParams]="getRouteLinkParams(currentPage + 1)"
+           class="pagination_link" [routerLink]="" queryParamsHandling="merge" preserveFragment="true"></a>
+    </li>
+</ul>

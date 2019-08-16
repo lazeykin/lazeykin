@@ -1,0 +1,208 @@
+<!-- <div class="container">
+    <div class="row">
+        <div class="col">
+            <section class="dashboardNavBuyer">
+                <ul class="accountNavTop">
+                    <li>
+                        <a [routerLink]="['/dashboard/seller/account/company']">
+                            {{'MENU_ITEM_COMPANY_INFO' | translate}}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);">
+                            {{'MENU_ITEM_USERS' | translate}}
+                        </a>
+                    </li>
+                    <li [ngClass]="{'active': true}">
+                        <a [routerLink]="['/dashboard/seller/account/sales-identity']">
+                            {{'MENU_ITEM_SALES_IDENTITY' | translate}}
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</div> -->
+<main role="main"
+      class="main pb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="titleTypo">
+                    {{'TITLE_SALES_IDENTITY' | translate}}
+                </div>
+                <div class="row editRow">
+                    <div class="col-4 editTitleCol">
+                        {{'LABEL_COMPANY_NAME' | translate}}
+                    </div>
+                    <div class="col-4 editTitleCol">
+                        {{'TEXT_LOCATION' | translate}}
+                    </div>
+                    <div class="col-2">
+                    </div>
+                    <div class="col-2">
+                    </div>
+                </div>
+                <div *ngIf="sales.length > 0" class="si-wrapper">
+                    <div class="row editRowValue" *ngFor="let sale of sales">
+                        <div class="col-4 editColValue">
+                            {{sale.name}}
+                        </div>
+                        <div class="col-4 editColValue">
+                            {{sale.address.country}}, {{sale.address.city}}
+                        </div>
+                        <div class="col-2 editLink pr-0">
+                            <a href="javascript:void(0);" (click)="editSI(sale.id)">
+                                <img class="edit" src="assets/images/editIconSimple.svg"> {{'BTN_EDIT' | translate}}
+                            </a>
+                        </div>
+                        <div class="col-2 editLink pr-0">
+                            <a *ngIf="sales.length > 1" href="javascript:void(0);" (click)="deleteSI(sale.id)">
+                                <img src="assets/images/deleteIconSimple.png"> {{'BTN_DELETE' | translate}}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!hideButton" class="addBrand">
+                    <a href="javascript:void(0);" (click)="addSI()">
+                        + {{'BTN_ADD' | translate}}
+                    </a>
+                </div>
+                <div *ngIf="displayForm"
+                     class="brandForm">
+                    <form name="form"
+                          class="form companyForm"
+                          (ngSubmit)="saveSINew()"
+                          [formGroup]="form_group"
+                          validate>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <app-input-text label="*{{'LABEL_COMPANY_NAME' | translate}}" placeholder="{{'PLACEHOLDER_COMPANY_NAME' | translate}}"
+                                                        formControlName="name">
+                                        </app-input-text>
+                                    </div>
+                                    <div class="col-4 row" formGroupName="address">
+                                        <div class="col-6">
+                                            <app-input-text label="*{{'LABEL_STREETNUM' | translate}}"
+                                                            placeholder=""
+                                                            formControlName="street_number">
+                                            </app-input-text>
+                                        </div>
+                                        <div class="col-6">
+                                            <app-input-text label="{{'LABEL_BUS' | translate}}"
+                                                            placeholder=""
+                                                            formControlName="bus">
+                                            </app-input-text>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 address" style="margin-left: 30px;">
+                                        <div formGroupName="address">
+                                            <app-select [listArray]="countries"
+                                                        label="*{{'LABEL_COUNTRY' | translate}}"
+                                                        formControlName="country">
+                                            </app-select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                            <app-input-text label="*{{'LABEL_VAT' | translate}}"
+                                                            placeholder="{{'PLACEHOLDER_VAT' | translate}}"
+                                                            formControlName="vat_number">
+                                            </app-input-text>
+                                    </div>
+                                    <div class="col-4" formGroupName="address">
+                                        <app-input-text label="*{{'LABEL_ZIP' | translate}}"
+                                                        placeholder="{{'PLACEHOLDER_ZIP' | translate}}"
+                                                        formControlName="zip">
+                                        </app-input-text>
+                                    </div>
+                                    <div class="col-4">
+                                        <app-input-text label="{{'LABEL_CONTACT_PERSON' | translate}}"
+                                                        placeholder="{{'PLACEHOLDER_CONTACT_PERSON' | translate}}"
+                                                        formControlName="contact_person">
+                                        </app-input-text>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <app-input-text label="{{'LABEL_COMPANY_WEB' | translate}}"
+                                                        placeholder="https://example.com"
+                                                        formControlName="website_address">
+                                        </app-input-text>
+                                    </div>
+                                    <div class="col-4" formGroupName="address">
+                                        <app-input-text label="*{{'LABEL_CITY' | translate}}"
+                                                        placeholder="{{'PLACEHOLDER_CITY' | translate}}"
+                                                        formControlName="city">
+                                        </app-input-text>
+                                    </div>
+                                    <div class="col-4">
+                                        <app-input-text label="*{{'LABEL_PHONE_NUM' | translate}}"
+                                                        placeholder="{{'PLACEHOLDER_PHONE_NUM' | translate}}"
+                                                        formControlName="phone_number" phone="true">
+                                        </app-input-text>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                        <div class="col-4" formGroupName="address">
+                                            <app-input-text label="*{{'LABEL_STREETNAME' | translate}}"
+                                                            placeholder="{{'PLACEHOLDER_STREETNAME' | translate}}"
+                                                            formControlName="street_name">
+                                            </app-input-text>
+                                        </div>
+                                        <div class="col-4" formGroupName="address">
+                                            <app-input-text label="{{'LABEL_STATE' | translate}}"
+                                                            placeholder="{{'PLACEHOLDER_STATE' | translate}}"
+                                                            formControlName="state">
+                                            </app-input-text>
+                                        </div>
+                                        <div class="col-4">
+                                            <app-input-email label="*{{'LABEL_EMAIL' | translate}}"
+                                                            placeholder="{{'PLACEHOLDER_EMAIL' | translate}}"
+                                                            formControlName="email"
+                                                            [styles]="emailStyle">
+                                            </app-input-email>
+                                        </div>
+                                </div>
+                            </div>
+                        </div> 
+                        <button class="btn btn-lg btn-primary btn-block login"
+                                type="submit">
+                            {{'BTN_SAVE' | translate}}
+                        </button>
+                    </form>
+                </div>
+                <div class="pt-2 pb-2 w-100">
+                    <div class="w-50">
+                        <alert></alert>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<modal id="custom-modal-2">
+    <div class="modal">
+        <div class="modal-body">            
+            <button (click)="closeModal('custom-modal-2');"
+                    class="closeModal">
+                <i class="fa fa-close"></i>
+            </button>
+            <div class="content">
+                <div class="image">
+                    <img src="assets/images/sucess.png"
+                         alt="logo">
+                </div>
+                <div>
+                    {{'MODAL_INFO_UPDATED' | translate}}
+                </div>
+            </div>
+        </div>
+    </div>
+     
+    <div class="modal-background"></div>
+</modal>

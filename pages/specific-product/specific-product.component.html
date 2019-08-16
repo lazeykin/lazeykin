@@ -1,0 +1,964 @@
+<app-full-page-spinner *ngIf="isLoading"></app-full-page-spinner>
+<a class="back" [routerLink]="['/dashboard/messenger/orders']" *ngIf="!showOrderDetail"><i
+        class="fa fa-chevron-left"></i> {{'BTN_BACK_TO_LIST' | translate}}</a>
+<a class="back" *ngIf="showOrderDetail" (click)="showOrderDetail = !showOrderDetail"><i class="fa fa-chevron-left"></i>
+    {{'BTN_BACK_TO_DIALOG' | translate}}</a>
+<button *ngIf="this.scope === 'seller'" class="add_button"
+        (click)="onGotoSelectProducts()">{{'BTN_ADD_PRODUCT' | translate}}</button>
+<div class="wrapper">
+    <div [class]="'dialog dialog-' + dialog.subject_type" *ngIf="!isLoading && !showOrderDetail">
+        <div class="top-holder">
+            <div *ngIf="dialog.subject_type == 'product'" class="product">
+                <a [routerLink]="['/dashboard/messenger/products']"><i class="material-icons arrow-left">keyboard_arrow_left</i></a>
+                <div class="avatar">
+                    <!-- todo: replace default avatar-->
+                    <img *ngIf="getDialogOtherUser(dialog).photo" [src]="getDialogOtherUser(dialog).photo.url"
+                         [alt]="getDialogOtherUser(dialog).full_name">
+                    <img *ngIf="!getDialogOtherUser(dialog).photo"
+                         src="https://image.flaticon.com/icons/svg/149/149071.svg"
+                         [alt]="getDialogOtherUser(dialog).full_name">
+                </div>
+                <div class="info">
+                    <span class="name">
+                        <div class="user-rating">
+                            {{getRating(dialog) | number: '1.1-1'}} <i class="fa fa-star"></i>
+                        </div>
+                        {{getDialogOtherUser(dialog).full_name}}
+                    </span>
+                    <span *ngIf="getDialogOtherUser(dialog).company_name.length > 50"
+                          class="company">{{(getDialogOtherUser(dialog).company_name | slice:0:50) + "..."}}</span>
+                    <span *ngIf="getDialogOtherUser(dialog).company_name.length < 50"
+                          class="company">{{getDialogOtherUser(dialog).company_name}}</span>
+                </div>
+            </div>
+            <div *ngIf="dialog.subject_type == 'order' && !showAllOrder"
+                 [class]="'order ' + getOrderStatusAsText(dialog.order)">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td class="order-contact order-id">
+                            {{getDialogOtherUser(dialog).full_name}}
+                            <br/>
+                            <span>{{getDialogOtherUser(dialog).company_name}}</span>
+                            <br/>
+                            <br/>
+                            <a>{{'TEXT_ORDER' | translate}}
+                                #{{dialog.order.id}}</a>
+                            <br/>
+                            <span>{{formatDate(dialog.date_created)}}</span>
+                        </td>
+
+                        <td class="order-products">
+                            {{ dialog.order.items.length }}
+                            <span *ngIf="dialog.order.items.length==1">{{'TEXT_PRODUCT' | translate}}</span>
+                            <span *ngIf="dialog.order.items.length!=1">{{'TEXT_PRODUCTS' | translate}}</span>
+                        </td>
+
+                        <td class="order-sizes">
+                            <span class="sizes_prepack sizes">
+                            {{ getOrderTotalPairs(dialog.order) }} {{'TEXT_PAIRS' | translate}}<br/>
+                                {{ getOrderTotalSizes(dialog.order) }} {{'TEXT_SIZES' | translate}}
+                                <!--<span *ngIf="dialog.order.items.length < 2" class="sizes_prepack_details">-->
+                                <!--<div *ngIf="dialog.order.items[0].size_quantities" class="sizes_prepack_details__container">-->
+                                <!--<div *ngFor="let size of Object.keys(dialog.order.items[0].size_quantities)">-->
+                                <!--<div class="sizes_prepack_details__size">{{size}}</div>-->
+                                <!--<div class="sizes_prepack_details__value">{{dialog.order.items[0].size_quantities[size]}}</div>-->
+                                <!--</div>-->
+                                <!--</div>-->
+                                <!--<div *ngIf="dialog.order.items[0].prepack" class="sizes_prepack_details__container">-->
+                                <!--<div *ngFor="let size of Object.keys(dialog.order.items[0].prepack.sizes)">-->
+                                <!--<div class="sizes_prepack_details__size">{{size}}</div>-->
+                                <!--<div class="sizes_prepack_details__value">{{dialog.order.items[0].prepack.sizes[size]}}</div>-->
+                                <!--</div>-->
+                                <!--</div>-->
+                                <!--</span>-->
+                            </span>
+                        </td>
+                        <td *ngIf="dialog.order.items.length" class="order-cost">
+                            {{ dialog.order.total_price_with_discount | number: '1.2-2' }} {{dialog.order.items[0].product.currency}}
+                            <br/>
+                            <span *ngIf="dialog.order.total_price != dialog.order.total_price_with_discount">{{ dialog.order.total_price | rounding }}
+                                eur</span>
+                        </td>
+                        <td class="order-control" *ngIf="dialog.order.summary_status == 0"
+                            [ngClass]="{'padd-top': scope==='buyer'}">
+                            <button (click)="openModal('confirm-accept')"
+                                    [disabled]="getOrderPersonalStatus(dialog.order) != 0 || isOrderChanged "
+                                    class="accept"><img
+                                    src="../../../../../assets/messenger_svg/accept.svg"/>{{'BTN_ACCEPT' | translate}}
+                            </button>
+                            <button (click)="openModal('confirm-decline')"
+                                    [disabled]="getOrderPersonalStatus(dialog.order) != 0 || isOrderChanged "
+                                    class="decline"><img
+                                    src="../../../../../assets/messenger_svg/decline.svg"/>{{'BTN_DECLINE' | translate}}
+                            </button>
+                            <!--<button *ngIf="this.scope === 'seller'" (click)="showOrderDetail = !showOrderDetail" class="edit"><img-->
+                            <!--src="../../../../../assets/images/edit-icon-active.svg"/>{{'BTN_EDIT' | translate}}-->
+                            <!--</button>-->
+                        </td>
+                        <td class="control-buttons order-accepted" *ngIf="dialog.order.summary_status == 1">
+                            {{'TEXT_ORDER_ACCEPTED' | translate}}
+                            <div *ngIf="dialog.order.summary_status == 1 && !dialog.order.score" id="rating_bar">
+                                <span id="rate_1" (click)="rateOrder(dialog.order.id, 1, $event)"></span>
+                                <span id="rate_2" (click)="rateOrder(dialog.order.id, 2, $event)"></span>
+                                <span id="rate_3" (click)="rateOrder(dialog.order.id, 3, $event)"></span>
+                                <span id="rate_4" (click)="rateOrder(dialog.order.id, 4, $event)"></span>
+                                <span id="rate_5" (click)="rateOrder(dialog.order.id, 5, $event)"></span>
+                            </div>
+                            <div class="user-rating" *ngIf="dialog.order.score">
+                                {{getRating(dialog) | number: '1.1-1'}} <i class="fa fa-star"></i>
+                            </div>
+                        </td>
+                        <td class="control-buttons order-declined" *ngIf="dialog.order.summary_status == 2">
+                            {{'TEXT_ORDER_DECLINED' | translate}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="dialog.subject_type == 'order' && showAllOrder"
+                 [class]="'order opened ' + getOrderStatusAsText(dialog.order)">
+                <div *ngIf="displayItemsCountError" class="alert_danger">
+                    {{'ERROR_LAST_ORDER_ITEM' | translate}}
+                </div>
+                <table>
+                    <thead>
+                    <tr class="table_header">
+                        <th></th>
+                        <th>{{'LABEL_PRODUCT_NAME' | translate}}</th>
+                        <th style="text-align: center">{{'TEXT_QUANTITY_OF_SIZES' | translate}}</th>
+                        <th>{{'TEXT_PAIR_COST' | translate}}</th>
+                        <th>{{'TEXT_TOTAL_COST' | translate}}</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody #insideElement>
+                    <tr class="show_order_td" *ngFor="let item of dialog.order.items; let i = index">
+                        <td>
+                            <div class="image">
+                                <img *ngIf="!item.product.default_image.thumbnail_200"
+                                     [src]="item.product.default_image.url" alt="">
+                                <img *ngIf="item.product.default_image.thumbnail_200"
+                                     [src]="item.product.default_image.thumbnail_200" alt="">
+                            </div>
+                        </td>
+                        <td class="product-name">
+                            <span class="ref">Ref. {{item.product.ref_number}}</span>
+                            <a class="title" (click)="goToProductPage(item.product.id)">{{item.product.title}}</a>
+                            <div class="customerRef">
+                                CRef. {{item.product.customer_ref_number ? item.product.customer_ref_number : '-'}}
+                            </div>
+                            <div class="productStatus">
+                                {{item.product.is_bidding_allowed ? ('TEXT_BIDDING' | translate) : ('TEXT_FIXED_PRICE' | translate)}}
+                            </div>
+                        </td>
+                        <td [ngStyle]="setChangeStyle(order?.items[i], i)" class="sizes"
+                            *ngIf="order?.items[i].size_quantities" [ngClass]="{'view-changes': viewChange[i]}">
+                            <span class="sizes_prepack">
+                            <span>{{getItemTotalPairs(order.items[i])}} {{'TEXT_PAIRS' | translate}}</span>
+                            <span>{{getItemTotalSizes(order.items[i])}} {{'TEXT_SIZES' | translate}}</span>
+                                  <span *ngIf="!pairChange[i]" class="sizes_prepack_details"
+                                        [ngClass]="{'left_pos': scope === 'seller'}">
+                                            <div class="sizes_prepack_details__container">
+                                                <div *ngFor="let size of order.items[i].size_quantities">
+                                                    <div class="sizes_prepack_details__size">{{size.key}}</div>
+                                                    <div class="sizes_prepack_details__value">{{size.value}}</div>
+                                                </div>
+                                            </div>
+                                        </span>
+                            </span>
+                            <div *ngIf="pairChange[i]" (click)="onOpenDetailChange(order.items[i], i)"
+                                 class="sizes_prev_value">
+                                <span class="text_was">{{'TEXT_WAS' | translate}}  </span>
+
+                                <span class="prev_item_value">
+                                    {{getChangedItemTotalPairs(order.items[i])}} pairs <br>
+                                    {{getChangedItemTotalSizes(order.items[i])}} sizes
+                                    </span>
+                            </div>
+                        </td>
+                        <td [ngStyle]="setChangeStyle(order?.items[i], i)" class="sizes"
+                            *ngIf="order && order?.items[i].prepack">
+                           <span class="sizes_prepack"> {{'TITLE_PREPACKS' | translate}}: <span class="prepack"
+                                                                                                *ngIf="!isItemEditing[item.id]">{{order?.items[i].quantity}}
+                               <span *ngIf="!pairChange[i]" class="sizes_prepack_details">
+                                            <div class="sizes_prepack_details__container">
+                                                <div *ngFor="let size of Object.keys(order?.items[i].prepack.sizes)">
+                                                    <div class="sizes_prepack_details__size">{{size}}</div>
+                                                    <div class="sizes_prepack_details__value">{{order?.items[i].prepack.sizes[size]}}</div>
+                                                </div>
+                                            </div>
+                                        </span>
+                            </span>
+                           </span>
+                            <div *ngIf="pairChange[i]" (click)="onOpenDetailChange(order?.items[i], i)"
+                                 class="sizes_prev_value_prep" style="display: block">
+                                <div class="prepack_name">{{(order?.items[i].prepack.name.length > 8) ?
+                                    (order?.items[i].prepack.name | slice:0:8) + '..' : (order?.items[i].prepack.name)}}
+                                </div>
+                                <div class="text_was padding">{{'TEXT_WAS' | translate}}<span
+                                        style="margin-left: 10px; display: inline-block; font-size: 15px;">{{order.items[i].prev_size_quantity}}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="price" [ngClass]="{'discount': order.items[i].product.discount_price}"
+                            [ngStyle]="setChangeStylePrice(order?.items[i], i)">
+                            <div class="bidding-wrapper">
+                                <span *ngIf="order.items[i].product.is_bidding_allowed" class="price_title">
+                                  <span>{{biddingPrice[i]}}</span>
+                                    <span *ngIf="checkForDiscount(biddingPrice[i], order.items[i].product.price)"
+                                          class="discount_title">
+                                                {{order.items[i].product.price | rounding}} {{order.items[i].product.currency}}
+                                    </span>
+                                </span>
+                                <span *ngIf="!order.items[i].product.is_bidding_allowed && order.items[i].product.has_discount"
+                                      class="price_title">
+                                   <span class="discount">{{priceToNumber(order.items[i].product.discount_price)}} {{order.items[i].product.currency}}</span>
+                                    <span class="discount_title">
+                                                {{order.items[i].product.price | rounding}} {{order.items[i].product.currency}}
+                                    </span>
+                                </span>
+                                <span *ngIf="!order.items[i].product.is_bidding_allowed && !order.items[i].product.has_discount"
+                                      class="price_title">
+                                   {{priceToNumber(order.items[i].product.price)}} {{order.items[i].product.currency}}
+                                </span>
+                            </div>
+                            <div *ngIf="priceChange[i]" class="price_prev_value">
+                                <span class="text_was">{{'TEXT_WAS' | translate}}  </span>
+
+                                <span class="prev_item_value">
+                                    {{oldPrice(order.items[i].prev_price_pair)}} {{order.items[i].product.currency}}
+                                    </span>
+                            </div>
+                            <!--<div class="price-wrapper">-->
+                            <!--<ng-container *ngIf="item.product.discount_price">-->
+                            <!--{{item.product.discount_price | number}} {{item.product.currency}}-->
+                            <!--<span class="old-price">{{item.product.price | number : '1.2-2'}} {{item.product.currency}}</span>-->
+                            <!--</ng-container>-->
+                            <!--<ng-container *ngIf="!item.product.discount_price">-->
+                            <!--{{item.product.price | number: '1.2'}} {{item.product.currency}}-->
+                            <!--</ng-container>-->
+                            <!--</div>-->
+                        </td>
+                        <td class="total"
+                            *ngIf="order.items[i].total_price != order.items[i].total_price_with_discount && order.items[i].product.is_bidding_allowed">
+                            <span>{{item.total_price_with_discount | number: '1.2-2'}} {{item.product.currency}}</span>
+                            <span class="old-price">{{item.total_price | number : '1.2'}} {{item.product.currency}}</span>
+                        </td>
+                        <td class="total"
+                            *ngIf="order.items[i].total_price != order.items[i].total_price_with_discount && !order.items[i].product.is_bidding_allowed">
+                            <span class="discount">{{item.total_price_with_discount | number: '1.2-2'}} {{item.product.currency}}</span>
+                            <span class="old-price">{{item.total_price | number : '1.2'}} {{item.product.currency}}</span>
+                        </td>
+                        <td class="total"
+                            *ngIf="order.items[i].total_price == order.items[i].total_price_with_discount">
+                            {{item.total_price | number: '1.2'}} {{item.product.currency}}
+                        </td>
+
+                        <td *ngIf="scope === 'seller'">
+                            <div class="control-buttons">
+                                <button class="edit" [disabled]="order.summary_status !== 0"
+                                        (click)="editItem(order.items[i], i)">{{'BTN_EDIT' | translate}}
+                                </button>
+                                <button class="delete" [disabled]="order.summary_status !== 0"
+                                        (click)="removeItem(order.items[i], i)">{{'BTN_DELETE' | translate}}
+                                </button>
+                            </div>
+                            <!--<div class="control-buttons itemLinks"-->
+                            <!--*ngIf="dialog.order.summary_status === 0 && isItemEditing[item.id]">-->
+                            <!--<button (click)="updateItem(order.items[i], i)" class="updateItem" [disabled]="errorMinPrice[i] || isNanDiscount">-->
+                            <!--<img class="updateButton" src="assets/images/accepted-icon.svg"> {{'BTN_CHANGE' | translate}}-->
+                            <!--</button>-->
+                            <!--<button (click)="cancelUpdateItem(order.items[i], i)" class="resetItem">-->
+                            <!--<img class="updateButton" src="assets/images/decline-icon.svg"> {{'BTN_RESET' | translate}}-->
+                            <!--</button>-->
+                            <!--</div>-->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button *ngIf="dialog.subject_type == 'order' && scope === 'seller'" class="show-all"
+                    (click)="showAllOrder = !showAllOrder">
+                {{showAllOrder ? ('BTN_SHOW_LESS' | translate) : ('BTN_VIEW_AND_EDIT' | translate)}}
+                <i *ngIf="!showAllOrder" class="fa fa-chevron-down"></i> <i *ngIf="showAllOrder"
+                                                                            class="fa fa-chevron-up"></i>
+            </button>
+            <button *ngIf="dialog.subject_type == 'order' && scope === 'buyer'" class="show-all"
+                    (click)="showAllOrder = !showAllOrder">
+                {{showAllOrder ? ('BTN_SHOW_LESS' | translate) : ('BTN_VIEW' | translate)}}
+                <i *ngIf="!showAllOrder" class="fa fa-chevron-down"></i> <i *ngIf="showAllOrder"
+                                                                            class="fa fa-chevron-up"></i>
+            </button>
+        </div>
+
+        <div [class]="'messages-history-wrapper ' + dialog.subject_type" #message_history_wrapper
+             (scroll)="onHistoryScroll($event)"
+             [scrollTop]="scrollTopPosition">
+            <div class="messages-history">
+                <div class="system-message" *ngIf="messages.length == 0 && !isLoadingMessages">
+                    <div class="message-content">
+                        <div class="text">{{'ERR_NO_MSG' | translate}}.</div>
+                    </div>
+                </div>
+                <div class="system-message" *ngIf="isLoadingMessages">
+                    <div class="message-content">
+                        <div class="text">{{'INFO_LOADING_MSG_HISTORY' | translate}}.</div>
+                    </div>
+                </div>
+                <div class="system-info-message" *ngIf="!hasNonFetchedMessages">
+                    <div class="message-content">
+                        <div class="text">{{'INFO_DIALOG_CREATED' | translate}} {{formatDate(dialog.date_created)}}
+                            , {{formatTime(dialog.date_created)}}.
+                        </div>
+                    </div>
+                </div>
+                <div *ngFor="let message of messages"
+                     [class]="(message.type=='system'?'system':
+                 (message.sender.id==userService.getCurrentUser().user.id?'outcome':'income')) + '-message'">
+                    <div class="message-content">
+                        <div class="text" *ngIf="message.type=='text'">{{ message.text }}</div>
+                        <div class="file" *ngIf="message.type=='file'">
+                            {{'TEXT_ATTACHMENT' | translate}} <a [href]="message.file"
+                                                                 target="_blank">{{'TEXT_DOWNLOAD' | translate}}</a>
+                        </div>
+                        <div class="text" *ngIf="message.type=='system'">{{ getMessageText(message) }}</div>
+                        <span class="datetime">
+                        <span class="date">{{formatDateToday(message.date_created)}}</span>&nbsp;<span
+                                class="time">{{formatTime(message.date_created)}}</span>
+                    </span>
+                    </div>
+                    <div class="changed" *ngIf="message.system_type === 'order_changed' && checkForPriceChange()">
+                        {{'TEXT_COST_CHANGED' | translate}} <a (click)="showAllOrder = !showAllOrder"
+                                                               class="cost_change">{{'TEXT_VIEW' | translate}}</a>
+                    </div>
+                    <div class="changed" *ngIf="message.system_type === 'order_changed' && checkForPairChange()">
+                        {{'TEXT_QUANTITY_CHANGED' | translate}} <a (click)="showAllOrder = !showAllOrder"
+                                                                   class="cost_change">{{'TEXT_VIEW' | translate}}</a>
+                    </div>
+                    <div class="approved_file"
+                         *ngIf="message.type=='system' && message.system_type =='order_approved' && message.text">
+
+                        <ng-container *ngFor="let item of getMsgFilesCount(message.text); let i = index">
+                            <div class="item">
+                                <div>
+                                    <img src="../../../../../assets/messenger_svg/approved_file.svg" alt="">
+                                </div>
+                                <div class="offer_detail">
+                                    <span class="title">Offer {{(getMessageFiles(message.text, i)).split('_')[1]}}</span>
+                                    <br>
+                                    <a [href]="getMessageFiles(message.text, i)" class="download"
+                                       target="_blank">{{'TEXT_DOWNLOAD' | translate}}</a>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="new-message-input">
+            <div class="input-container">
+                <div class="file-upload">
+                    +
+                    <input type="file" [disabled]="isSendingMessage"
+                           accept=".pdf,.jpg,.jpeg,.zip,.tiff,.png,.doc,.docx,.xls,.xlsx,*.*"
+                           (change)="onFilePicked($event.target.files)"/>
+                </div>
+                <textarea autosize #new_message_content name="message-content" [disabled]="isSendingMessage"
+                          (keypress)="onEnterPressed($event)"
+                          placeholder="{{'PLACEHOLDER_INPUT_MESSAGE' | translate}}"></textarea>
+                <button class="send" type="submit" *ngIf="isSendingMessage">
+                    <img class="form_spinner" src="./../../../../../assets/images/Spinner-form.svg" alt="">
+                </button>
+                <button class="send" type="submit" *ngIf="!isSendingMessage"
+                        (click)="onCreateMessageClicked()">{{'BTN_SEND' | translate}}
+                </button>
+
+            </div>
+        </div>
+        <div class="order-buttons" *ngIf="dialog.order">
+            <span>{{dialog.order.items.length}} {{'TEXT_ITEMS' | translate}} {{'TEXT_IN_ORDER' | translate}}</span>
+            <div class="control-buttons" *ngIf="dialog.order.summary_status == 0">
+                <button class="decline"
+                        (click)="openModal('confirm-decline')"
+                        [disabled]="getOrderPersonalStatus(dialog.order) != 0 || isOrderChanged ">{{'BTN_DECLINE' | translate}}
+                </button>
+                <button class="accept"
+                        (click)="openModal('confirm-accept')"
+                        [disabled]="getOrderPersonalStatus(dialog.order) != 0 || isOrderChanged ">{{'BTN_ACCEPT' | translate}}
+                </button>
+                <!--<button class="send"-->
+                <!--[disabled]="isEditing() || !isOrderChanged || order.summary_status != 0"-->
+                <!--(click)="applyOrderChanges()">-->
+                <!--{{'BTN_SEND_EDITS' | translate}}-->
+                <!--</button>-->
+            </div>
+            <div class="control-buttons order-accepted" *ngIf="dialog.order.summary_status == 1">
+                {{'TEXT_ORDER_ACCEPTED' | translate}}
+            </div>
+            <div class="control-buttons order-declined" *ngIf="dialog.order.summary_status == 2">
+                {{'TEXT_ORDER_DECLINED' | translate}}
+            </div>
+        </div>
+    </div>
+    <div class="order opened detail" *ngIf="showOrderDetail && dialog.order">
+        <div class="table-wrapper">
+            <table>
+                <tbody>
+                <tr *ngFor="let item of dialog.order.items; let i = index">
+                    <td>
+                        <div class="image">
+                            <img *ngIf="!item.product.default_image.thumbnail_200"
+                                 [src]="item.product.default_image.url" alt="">
+                            <img *ngIf="item.product.default_image.thumbnail_200"
+                                 [src]="item.product.default_image.thumbnail_200" alt="">
+                        </div>
+                    </td>
+                    <td class="product-name">
+                        <span class="ref">Ref. {{item.product.ref_number}}</span>
+                        <a class="title" (click)="goToProductPage(item.product.id)">{{item.product.title}}</a>
+                        <div class="customerRef">
+                            CRef. {{item.product.customer_ref_number ? item.product.customer_ref_number : '-'}}
+                        </div>
+                    </td>
+                    <td class="sizes" *ngIf="order.items[i].size_quantities">
+                        <span>{{getItemTotalPairs(order.items[i])}} {{'TEXT_PAIRS' | translate}}</span>
+                        <span>{{getItemTotalSizes(order.items[i])}} {{'TEXT_SIZES' | translate}}</span>
+                    </td>
+                    <td class="sizes" *ngIf="order.items[i].prepack">
+                        {{'TITLE_PREPACKS' | translate}}: <span class="prepack"
+                                                                *ngIf="!isItemEditing[item.id]">{{order.items[i].quantity}}</span>
+                    </td>
+                    <td class="price" [ngClass]="{'discount': item.product.discount_price}">
+                        <div class="bidding-wrapper">
+                            <div *ngIf="order.summary_status !== 0">
+                                <div *ngIf="!item.product.is_bidding_allowed"> -</div>
+                                <div *ngIf="item.product.is_bidding_allowed">
+                                    <span *ngIf="item"> {{item.bidding_discount_percent | number : 2}} % </span>
+                                </div>
+                            </div>
+                            <div *ngIf="order.summary_status === 0">
+                                <div *ngIf="!item.product.is_bidding_allowed"> -</div>
+                                <div *ngIf="item.product.is_bidding_allowed && !isItemEditing">
+                                    <span *ngIf="item"> {{item.bidding_discount_percent | number : 2}} % </span>
+                                </div>
+                                <!--<div *ngIf="item.product.is_bidding_allowed && isItemEditing"-->
+                                <!--[ngClass]="{'disable': !isItemEditing[item.id]}"-->
+                                <!--class="input-group disountInput">-->
+                                <!--<span class="input-group-btn">-->
+                                <!--<button type="button" [disabled]="!isItemEditing[item.id] || item.bidding_discount_percent === 0"-->
+                                <!--(click)="onDiscountMinus(order.items[i], i)"-->
+                                <!--class="btn btn-default btn-number btnMinus">-->
+                                <!--</button>-->
+                                <!--</span>-->
+                                <!--<div>-->
+                                <!--<div class="pair_per_pair"><span *ngIf="scope === 'seller'" class="info_pair"><i-->
+                                <!--class="fa fa-info-circle"></i>-->
+                                <!--<span class="show_quantity min_price_container">-->
+                                <!--{{'PROD_SPECIFICATION_MINIMAL_PRICE' | translate}}-->
+                                <!--<br>{{order.items[i].product.minimal_price}} {{order.items[i].product.currency}}-->
+                                <!--</span>-->
+                                <!--</span>-->
+                                <!--{{'PRICE_PER_PAIR' | translate}}-->
+                                <!--</div>-->
+                                <!--<div class="input-group disountInput bidding_input">-->
+                                <!--<input type="text"-->
+                                <!--[(ngModel)]="biddingPrice[i]"-->
+                                <!--[disabled]="!isItemEditing[item.id]"-->
+                                <!--(input)="onDiscountChange($event, order.items[i], i)"-->
+                                <!--class="form-control input-number input_bid">-->
+                                <!--</div>-->
+                                <!--<p class="discount_title text_right">-->
+                                <!--{{order.items[i].product.price | rounding}} {{order.items[i].product.currency}}-->
+                                <!--</p>-->
+                                <!--</div>-->
+
+                                <!--</div>-->
+                            </div>
+                            <!--<div class="displayErorDiscount w-100"-->
+                            <!--*ngIf="displayErorDiscount[item.id]">-->
+                            <!--{{'ERR_DISCOUNT_100' | translate}}-->
+                            <!--</div>-->
+                            <!--<p *ngIf="errorMinPrice[i]" class="error_min_message">{{'ERR_MIN_PRICE' | translate}}</p>-->
+                        </div>
+                        <!--<div class="price-wrapper">-->
+                        <!--<ng-container *ngIf="item.product.discount_price">-->
+                        <!--{{item.product.discount_price | number}} {{item.product.currency}}-->
+                        <!--<span class="old-price">{{item.product.price | number : '1.2-2'}} {{item.product.currency}}</span>-->
+                        <!--</ng-container>-->
+                        <!--<ng-container *ngIf="!item.product.discount_price">-->
+                        <!--{{item.product.price | number: '1.2'}} {{item.product.currency}}-->
+                        <!--</ng-container>-->
+                        <!--</div> -->
+                    </td>
+                    <td class="total discount"
+                        *ngIf="order.items[i].total_price !== order.items[i].total_price_with_discount">
+                        {{order.items[i].total_price_with_discount | number: '1.2-2'}} {{item.product.currency}}
+                        <span class="old-price">{{order.items[i].total_price | number : '1.2'}} {{item.product.currency}}</span>
+                    </td>
+                    <td class="total" *ngIf="order.items[i].total_price === order.items[i].total_price_with_discount">
+                        {{order.items[i].total_price | number: '1.2'}} {{item.product.currency}}
+                    </td>
+                    <td>
+                        <div class="control-buttons" *ngIf="!isItemEditing[item.id]">
+                            <button class="edit" [disabled]="order.summary_status !== 0"
+                                    (click)="editItem(order.items[i], i)">{{'BTN_EDIT' | translate}}
+                            </button>
+                            <button class="delete" [disabled]="order.summary_status !== 0"
+                                    (click)="removeItem(order.items[i], i)">{{'BTN_DELETE' | translate}}
+                            </button>
+                        </div>
+                        <div class="control-buttons itemLinks"
+                             *ngIf="dialog.order.summary_status === 0 && isItemEditing[item.id]">
+                            <button (click)="updateItem(order.items[i], i)" class="updateItem"
+                                    [disabled]="errorMinPrice[i] || isNanDiscount">
+                                <img class="updateButton"
+                                     src="assets/images/accepted-icon.svg"> {{'BTN_CHANGE' | translate}}
+                            </button>
+                            <button (click)="cancelUpdateItem(order.items[i], i)" class="resetItem">
+                                <img class="updateButton"
+                                     src="assets/images/decline-icon.svg"> {{'BTN_RESET' | translate}}
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="order-buttons">
+            <span>{{dialog.order.items.length}} {{'TEXT_ITEMS' | translate}} {{'TEXT_IN_ORDER' | translate}}</span>
+            <div class="control-buttons" *ngIf="order.summary_status == 0">
+                <button class="decline"
+                        (click)="openModal('confirm-decline')"
+                        [disabled]="getOrderPersonalStatus(dialog.order) != 0 || isOrderChanged ">{{'BTN_DECLINE' | translate}}
+                </button>
+                <button class="accept"
+                        (click)="openModal('confirm-accept')"
+                        [disabled]="getOrderPersonalStatus(dialog.order) != 0 || isOrderChanged ">{{'BTN_ACCEPT' | translate}}
+                </button>
+                <!--<button class="send"-->
+                <!--[disabled]="isEditing() || !isOrderChanged || order.summary_status != 0"-->
+                <!--(click)="applyOrderChanges()">-->
+                <!--{{'BTN_SEND_EDITS' | translate}}-->
+                <!--</button>-->
+            </div>
+            <div class="control-buttons order-accepted" *ngIf="dialog.order.summary_status == 1">
+                {{'TEXT_ORDER_ACCEPTED' | translate}}
+            </div>
+            <div class="control-buttons order-declined" *ngIf="dialog.order.summary_status == 2">
+                {{'TEXT_ORDER_DECLINED' | translate}}
+            </div>
+        </div>
+    </div>
+    <div class="order-badge" *ngIf="dialog && dialog.order && !showOrderDetail">
+        <h2>{{'TITLE_IN_YOUR_ORDER' | translate}}</h2>
+        <div>
+            <table>
+                <tbody>
+                <tr *ngFor="let item of dialog.order.items">
+                    <td>
+                        <div *ngIf="!item.product.default_image.thumbnail_200" class="image">
+                            <img [src]="item.product.default_image.url" alt="">
+                        </div>
+                        <div *ngIf="item.product.default_image.thumbnail_200" class="image">
+                            <img [src]="item.product.default_image.thumbnail_200" alt="">
+                        </div>
+                    </td>
+                    <td class="product-name">
+                        <span class="ref">Ref.{{item.product.ref_number}}</span>
+                        <a class="title" (click)="goToProductPage(item.product.id)">{{item.product.title}}</a>
+                        <div class="customerRef">
+                            CRef. {{item.product.customer_ref_number ? item.product.customer_ref_number : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <button *ngIf="scope==='seller'" class="view" (click)="showOrderDetail = !showOrderDetail"><i
+                class="fa fa-eye"></i> {{'BTN_VIEW' | translate}}</button>
+    </div>
+    <div class="product-badge" *ngIf="dialog && dialog.product">
+        <h3>{{'TEXT_PRODUCT' | translate}}</h3>
+        <div class="row">
+            <div class="product-image">
+                <img *ngIf="!dialog.product.default_image.thumbnail_200"
+                     class="justify-content-center align-self-center"
+                     [src]="dialog.product.default_image.url"
+                     [alt]="dialog.product.title">
+                <img *ngIf="dialog.product.default_image.thumbnail_200" class="justify-content-center align-self-center"
+                     [src]="dialog.product.default_image.thumbnail_200"
+                     [alt]="dialog.product.title">
+            </div>
+
+            <div class="product-info">
+                <span class="ref">Ref. {{ dialog.product.ref_number }}</span><br/>
+                <span class="name">{{ dialog.product.title }}</span><br/>
+                <span class="price">{{ dialog.product.price | rounding }} {{ dialog.product.currency }}</span>
+                <div class="customerRef">
+                    CRef. {{dialog.product.customer_ref_number ? dialog.product.customer_ref_number : '-'}}
+                </div>
+            </div>
+        </div>
+        <a [routerLink]="getProductLink(dialog)" class="show">{{'BTN_SHOW_MORE' | translate}}</a>
+    </div>
+</div>
+<modal id="custom-modal-10">
+    <div class="modal">
+        <div class="modal-body" #insideModal>
+            <div class="top">
+                <button (click)="closeModal('custom-modal-10'); isItemEditing= []"
+                        class="closeModal">
+                    <span class="cart_modal_close_button">&times;</span>
+                </button>
+            </div>
+            <div class="content">
+                <table *ngIf="order">
+                    <tr *ngFor="let item of order.items; let j = index">
+                        <td class="itemSizes"
+                            *ngIf="item.size_quantities && itemNumber > -1">
+                            <div *ngIf="isItemEditing[j]">
+                                <div
+                                        class="input-group disountInput">
+                                    <div class="modal_product_detail">
+                                        <div class="modal_product_detail_info">
+                                            <div>
+                                                <div class="image">
+                                                    <img *ngIf="!item.product.default_image.thumbnail_200"
+                                                         [src]="item.product.default_image.url" alt="">
+                                                    <img *ngIf="item.product.default_image.thumbnail_200"
+                                                         [src]="item.product.default_image.thumbnail_200" alt=""></div>
+                                            </div>
+                                            <div class="product-name">
+                                                <span class="ref">Ref. {{item.product.ref_number}}</span>
+                                                <a class="title"
+                                                   (click)="goToProductPage(item.product.id)">{{item.product.title}}</a>
+                                                <div class="customerRef">
+                                                    CRef. {{item.product.customer_ref_number ? item.product.customer_ref_number : '-'}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="item.product.is_bidding_allowed">
+                                            <div class="pair_per_pair">
+                                                <span *ngIf="scope === 'seller'" class="info_pair"><i
+                                                        class="fa fa-info-circle"></i>
+                                                    <span class="show_quantity min_price_container">
+                                                        {{'PROD_SPECIFICATION_MINIMAL_PRICE' | translate}}
+                                                        <br>{{item.product.minimal_price}} {{item.product.currency}}
+                                                    </span>
+                                                </span>
+                                                {{'PRICE_PER_PAIR' | translate}}
+                                            </div>
+                                            <div class="input-group disountInput bidding_input">
+                                                <input type="text"
+                                                       [(ngModel)]="biddingPrice[j]"
+                                                       (input)="onDiscountChange($event, item, j)"
+                                                       class="form-control input-number input_bid">
+                                            </div>
+                                            <p class="discount_title text_right">
+                                                {{item.product.price | rounding}} {{item.product.currency}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p *ngIf="errorMinPrice[j]"
+                                   class="error_min_message">{{'ERR_MIN_PRICE' | translate}}</p>
+                                <!--<p class="size_quantity">{{'PRODUCT_SIZE_QUANTITY' | translate}}</p>-->
+                                <div class="modal_sizes_container">
+                                    <div style="display: inline-block"
+                                         *ngFor="let size of onSortSizes(item.size_quantities, item); let i = index"
+                                         class="updateInput">
+                                        <div class="sizeNumber">
+                                            {{size.key}}
+                                        </div>
+                                        <span class="show_quantity_container">
+                                        <input type="text"
+                                               class="sizeValue modal_size"
+                                               (mouseenter)="mouseHovering(i)" (mouseleave)="mouseLeaving(i)"
+                                               [(ngModel)]="size.value"
+                                               (keypress)="_keyPress($event)"
+                                               (input)="onCheckForError(item.size_quantities)"
+                                               (ngModelChange)=" onSizeChange(size.value, productInfoArray[itemNumber][size.key], i)"
+                                               [ngModelOptions]="{standalone: true}">
+                                        <span class="show_quantity"
+                                              *ngIf="isHovering[i]">{{productInfoArray[itemNumber][size.key]}}
+                                            {{'TEXT_LEFT' | translate}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="itemSizes"
+                            *ngIf="item.prepack">
+                            <div *ngIf="isItemEditing[j]">
+                                <div
+                                        class="input-group disountInput">
+                                    <div class="modal_product_detail">
+                                        <div class="modal_product_detail_info">
+                                            <div>
+                                                <div class="image">
+                                                    <img *ngIf="!item.product.default_image.thumbnail_200"
+                                                         [src]="item.product.default_image.url" alt="">
+                                                    <img *ngIf="item.product.default_image.thumbnail_200"
+                                                         [src]="item.product.default_image.thumbnail_200" alt=""></div>
+                                            </div>
+                                            <div class="product-name">
+                                                <span class="ref">Ref. {{item.product.ref_number}}</span>
+                                                <a class="title"
+                                                   (click)="goToProductPage(item.product.id)">{{item.product.title}}</a>
+                                                <div class="customerRef">
+                                                    CRef. {{item.product.customer_ref_number ? item.product.customer_ref_number : '-'}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="item.product.is_bidding_allowed">
+                                            <div class="pair_per_pair">
+                                                <span *ngIf="scope === 'seller'" class="info_pair"><i
+                                                        class="fa fa-info-circle"></i>
+                                                    <span class="show_quantity min_price_container">
+                                                        {{'PROD_SPECIFICATION_MINIMAL_PRICE' | translate}}
+                                                        <br>{{item.product.minimal_price}} {{item.product.currency}}
+                                                    </span>
+                                                </span>
+                                                {{'PRICE_PER_PAIR' | translate}}
+                                            </div>
+                                            <div class="input-group disountInput bidding_input">
+                                                <input type="text"
+                                                       [(ngModel)]="biddingPrice[j]"
+                                                       (input)="onDiscountChange($event, item, j)"
+                                                       class="form-control input-number input_bid">
+                                            </div>
+                                            <p class="discount_title text_right">
+                                                {{item.product.price | rounding}} {{item.product.currency}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p *ngIf="errorMinPrice[j]"
+                                   class="error_min_message">{{'ERR_MIN_PRICE' | translate}}</p>
+
+                                <div>
+                                    <table>
+                                        <thead>
+                                        <tr class="modal_table_header">
+                                            <th>{{'TEXT_PREPACK_NAME' | translate}}</th>
+                                            <th>{{'TEXT_QUANTITY_AVAILABLE' | translate}}</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr class="modal_table_body">
+                                            <td>{{(item.prepack.name.length > 12) ?
+                                                (item.prepack.name | slice:0:12) + '..' : (item.prepack.name)}}</td>
+                                            <td>{{item.prepack.available_quantity}}</td>
+                                            <td>
+                                                <span class="show_quantity_container">
+                                                    <input
+                                                            type="text"
+                                                            class="form-control updateInput prepack"
+                                                            name="prepacksQuantity_{{i}}"
+                                                            [(ngModel)]="item.quantity"
+                                                            (mouseenter)="mouseHovering(i)"
+                                                            (mouseleave)="mouseLeaving(i)"
+                                                            id="prepacksQuantity_{{i}}"
+                                                            (keypress)="_keyPress($event)"
+                                                            (input)="onCheckForError(item.quantity)"
+                                                            (ngModelChange)="onSizeChange(item.quantity, prepackAvailableQuantity[item.id], item.id)"
+                                                            #name="ngModel"/>
+                                            <span class="show_quantity"
+                                                  *ngIf="isHovering[i] && prepackAvailableQuantity[item.id]">{{prepackAvailableQuantity[item.id]}}
+                                                {{'TEXT_LEFT' | translate}}</span>
+                                                </span></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div *ngIf="displayErorPrepackQuantity && itemNumber == j"
+                                 style="color:red; font-size: 14px;">
+                                {{'ERR_PREPACK_QUANTITY' | translate}}
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <p *ngIf="errorQuantityMes" style="color: #d0021b; text-align: left; font-size: 14px">
+                    {{'ERR_QUANTITY' | translate}}
+                </p>
+                <div *ngIf="displayErorQuantity"
+                     style="color:red; font-size: 14px; text-align: left;">
+                    {{'ERR_NO_SIZE' | translate}}
+                </div>
+                <div class="modal_button_container">
+                    <button class="cancel" (click)="closeModal('custom-modal-10'); isItemEditing = []"
+                            [disabled]="isOfferLoading">{{'BTN_CANCEL' | translate}}</button>
+                    <button [disabled]="displayErorPrepackQuantity || displayErorQuantity || errorQuantityMes"
+                            class="modal_send_button"
+                            (click)="onInputSizes(); updateItem(editingItem, itemNumber)">{{'BTN_SAVE' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+     
+    <div class="modal-background"></div>
+</modal>
+
+<modal id="modal-error">
+    <div class="modal">
+        <div class="modal-body">
+            <div class="top">
+                <img src="../../../../../assets/images/error.svg" class="error" alt="error"/>
+                <h2>{{'TEXT_ERROR' | translate}}</h2>
+                <button (click)="closeModal('modal-error');"
+                        class="closeModal">
+                </button>
+            </div>
+            <div class="content">
+                {{'ERR_CANNOT_SEND_EDITS' | translate}}.
+            </div>
+            <button (click)="closeModal('modal-error')">{{'BTN_OK' | translate}}</button>
+        </div>
+    </div>
+    <div class="modal-background"></div>
+</modal>
+<modal id="sizes-changes">
+    <div class="modal">
+        <div class="modal-body">            
+            <button (click)="closeModal('sizes-changes');"
+                    class="closeModal">
+                <span class="cart_modal_close_button">&times;</span>
+            </button>
+            <div>
+                <div class="sizer w-100" *ngIf="modalProduct.size_quantities">
+                    <h1 class="title">{{'TEXT_PRODUCT_CHANGE' | translate}}</h1>
+                    <h3>{{'TEXT_WAS' | translate}}</h3>
+                    <div class="row">
+                        <div class="col modal-sizes-container">
+                            <div class="w-30 sizesBlock">
+                                <div class="quantity_size">
+                                    {{'PRODUCT_SIZE_QUANTITY' | translate}}
+                                </div>
+                            </div>
+                            <div class="sizesBlock">
+                                <div style="float:left; min-width: 35px;"
+                                     *ngFor="let size of modalProduct.prev_size_quantity; let i = index">
+                                    <div class="sizeNumber">
+                                        {{size.key}}
+                                    </div>
+                                    <span class="show_quantity_container">
+                                        <div class="sizeValue modal_size">
+                                            {{size.value}}
+                                        </div>
+                                         </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h3>{{'TEXT_CHANGES' | translate}}</h3>
+                            <div class="w-30 sizesBlock">
+                                <div class="quantity_size">
+                                    {{'PRODUCT_SIZE_QUANTITY' | translate}}
+                                </div>
+                            </div>
+                            <div class="sizesBlock">
+                                <div style="float:left; min-width: 35px;"
+                                     *ngFor="let size of modalProduct.size_quantities; let i = index">
+                                    <div class="sizeNumber">
+                                        {{size.key}}
+                                    </div>
+                                    <span class="show_quantity_container">
+                                        <div class="sizeValue modal_size">
+                                            {{size.value}}
+                                        </div>
+                                         </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="modalProduct.prepack">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="prepack_changes_title">{{'TEXT_PREPACK_CHANGES' | translate}}</h3>
+                            <div class="w-100">
+                                <div class="prepack_body">
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th>Prepack Name</th>
+                                            <th>Quantity was</th>
+                                            <th>Quantity changes</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td class="prepack_table_name">{{(modalProduct.prepack.name.length > 12) ?
+                                                (modalProduct.prepack.name | slice:0:12) + '..' : (modalProduct.prepack.name)}}</td>
+                                            <td>{{modalProduct.prev_size_quantity}}</td>
+                                            <td>{{modalProduct.quantity}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     
+    <div class="modal-background"></div>
+</modal>
+
+<!-- Confirmation modal windows -->
+<modal id="confirm-accept">
+    <div class="modal">
+        <div class="modal-body">
+            <button (click)="closeModal('confirm-accept');" class="closeModal"></button>
+            <div class="top">
+                <div class="circle">!</div>
+                <h2>{{'MODAL_FINAL_APPROVE' | translate}}</h2>
+            </div>
+            <div class="content">
+                <p>{{'MODAL_FINAL_APPROVE_TEXT' | translate}}</p>
+                <div class="buttons">
+                    <button class="cancel" (click)="closeModal('confirm-accept')"
+                            [disabled]="isOfferLoading">{{'BTN_CANCEL' | translate}}</button>
+                    <button class="accept" (click)="onAcceptOrderClicked()"
+                            [disabled]="isOrderChanged || isOfferLoading">
+                        {{'BTN_ACCEPT' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-background"></div>
+</modal>
+
+<modal id="confirm-decline">
+    <div class="modal">
+        <div class="modal-body">
+            <button (click)="closeModal('confirm-decline');" class="closeModal"></button>
+            <div class="top">
+                <div class="circle">!</div>
+                <h2>{{'MODAL_FINAL_DECLINE' | translate}}</h2>
+            </div>
+            <div class="content">
+                <p>{{'MODAL_FINAL_DECLINE_TEXT' | translate}}</p>
+                <div class="buttons">
+                    <button class="cancel" (click)="closeModal('confirm-decline')"
+                            [disabled]="isOfferLoading">{{'BTN_CANCEL' | translate}}</button>
+                    <button class="decline" (click)="onDeclineOrderClicked()"
+                            [disabled]="isOrderChanged || isOfferLoading">
+                        {{'BTN_DECLINE' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-background"></div>
+</modal>

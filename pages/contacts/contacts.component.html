@@ -1,0 +1,162 @@
+<form name="form"
+      class="form groupForm"
+      (keyup.enter)="$event.preventDefault()"
+      (keydown.enter)="$event.preventDefault()"
+      validate>
+<div class="groups-wrapper">
+    <div class="contact-filters">
+        <button type="button" [ngClass]="{'active': activeFilter === 'all'}" (click)="filterCategory('all')">{{'FILTER_ALL' | translate}}</button>
+        <button type="button" [ngClass]="{'active': activeFilter === 'shoonic'}" (click)="filterCategory('shoonic')">{{'FILTER_SHOONIC_CONTACTS' | translate}}</button>
+        <button type="button" [ngClass]="{'active': activeFilter === 'other'}" (click)="filterCategory('other')">{{'FILTER_OTHER_CONTACTS' | translate}}</button>
+    </div>
+    <div class="panel-filters">
+            <div class="input-group search">
+                <input [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText" type="text" class="form-control" placeholder="{{'PLACEHOLDER_SEARCH_NAME_OR_COMPANY' | translate}}"
+                        (keyup.enter)="onSearchClick()" maxlength="120">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" (click)="onSearchClick()"><img src="../../../../../assets/images/search.svg" alt="search" /></button>
+                </div>
+            </div>
+            <a *ngIf="searchText" class="search-clear" (click)="onClearFiltersClick()">{{'BTN_CLEAR_ALL' | translate}}</a>
+            <!-- <div class="button-wrapper wrapper">
+                <button class="add-contact" (click)="onAddGroup()">Add new contact</button>
+            </div> -->
+        </div>
+        
+        <app-full-page-spinner *ngIf="isLoading"></app-full-page-spinner>
+        
+        <div class="placeholder-text" *ngIf="!contacts.length && !isLoading">
+            <span>{{'ERR_NO_CONTACT' | translate}}</span>
+        </div>
+<div class="table_wrapper" *ngIf="contacts.length">
+        <table>
+            <tr *ngFor="let contact of contacts; let i = index" class="contact-item">
+                <td>
+                    <label *ngIf="scope === 'seller'" class="custom-control fill-checkbox">
+                        <input type="checkbox"
+                               class="fill-control-input"
+                               [(ngModel)]="selItem[i]"
+                               (change)="onSelectedItem(contact.id, selItem[i]) "
+                               [ngModelOptions]="{standalone: true}"/>
+                        <span class="fill-control-indicator"></span>
+                    </label>
+                </td>
+                <td class="avatar">
+                    <!-- todo: replace default avatar-->
+                    <div>
+                        <img    *ngIf="contact.photo && !contact.photo.thumbnail_200"
+                                [src]="contact.photo.url" [alt]="contact.full_name">
+                        <img    *ngIf="contact.photo && contact.photo.thumbnail_200"
+                                [src]="contact.photo.thumbnail_200" [alt]="contact.full_name">
+                        <img    *ngIf="!contact.photo" src="https://image.flaticon.com/icons/svg/149/149071.svg" [alt]="'user'">
+                    </div>
+                </td>
+                <!-- <td class="info" *ngIf="contact.non_registered_user_email !== null">
+                    <span>{{contact.non_registered_user_email}}</span>
+                </td> -->
+                <td class="info">
+                    <span class="name">{{contact.full_name}}</span><br/>
+                    <span class="company">{{contact.company_name}}</span>
+                </td>
+                <td class="control-buttons">
+                    <div>
+                        <button 
+                            [ngClass]="{'hidden-btn': scope === 'buyer'}"
+                            type="button"
+                            class="control-btn groups" 
+                            [disabled]="true"
+                            routerLink="/dashboard/messenger/group/{{cg_id}}/user/{{contact.id}}">
+                            {{'BTN_VIEW_GROUPS' | translate}}
+                        </button>
+                        <button 
+                            type="button"
+                            class="control-btn orders"  
+                            [routerLink]="['/dashboard/messenger/orders']" 
+                            [queryParams]="contact.user ? {'search': 'user:'+contact.id} : undefined">
+                            {{'BTN_VIEW_ORDERS' | translate}}
+                        </button>
+                        <button 
+                            type="button"
+                            class="control-btn dialogs" 
+                            [routerLink]="['/dashboard/messenger/products']" 
+                            [queryParams]="contact.user ? {'search': 'user:'+contact.id} : undefined">
+                            {{'BTN_VIEW_DIALOGS' | translate}}
+                        </button>
+                        <button 
+                            [ngClass]="{'hidden-btn': scope === 'buyer'}"
+                            type="button"
+                            class="control-btn add-to-group"
+                            (click)="addContact(contact.id)"
+                            [disabled]="checkIfAdded(contact.id) || scope === 'buyer'">
+                            {{'BTN_ADD_TO_GROUP' | translate}}
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+<div [ngClass]="'pagination_holder ' + ((isLoading || (message && !isLoading))?'hidden':'')" >
+    <app-pagination (pageChanged)="onPageChanged($event)"></app-pagination>
+</div>
+<div class="action-wrapper " *ngIf="scope === 'seller'">
+<div class="group_action" *ngIf="showGroupAction">
+        <div *ngIf="showGroupAction" class="items_number">{{count}} {{count === 1 ? ('TEXT_CONTACT' | translate) : ('TEXT_CONTACTS' | translate)}} {{'TEXT_SELECTED' | translate}}
+        </div>
+        <button [disabled]="checkSelected()" class="add-to-group" (click)="onContactAdd()">{{'BTN_ADD_TO_GROUP' | translate}}</button>
+    </div>
+</div>
+</form>
+
+<modal id="modal-add-to-group" [hidden]="scope === 'buyer'">
+    <div class="modal">
+        <div class="modal-body">            
+            <button (click)="closeModal();"
+                    class="closeModal">
+                <i class="fa fa-close"></i>
+            </button>
+            <div class="content" *ngIf="!showSuccess">
+                <h1>{{'MODAL_SELECT_CONTACT_GROUP' | translate}}</h1>
+                <form
+                    (ngSubmit)="addContactsToGroup()"
+                    [formGroup]="selectGroup"
+                    validate>
+                    <app-select
+                        [listArray]="contactGroups"
+                        formControlName="group">
+                    </app-select>
+                <div class="modal-control">
+                    <button
+                            type="button"
+                            class="btn cancel"
+                            (click)="closeModal()">
+                        {{'BTN_CANCEL' | translate}}
+                    </button>
+                    <button 
+                            class="btn add"
+                            type="submit">
+                        {{'BTN_ADD' | translate}}
+                    </button>
+                </div>
+                </form>
+            </div>
+            <div class="content success" *ngIf="showSuccess">
+                <div class="image">
+                    <img src="assets/images/sucess.png" alt="logo">
+                </div>
+                <h1>{{'MODAL_CONTACTS_ADDED_GROUP' | translate}}</h1>
+                <div class="modal-control">
+                <button
+                        type="button"
+                        class="btn cancel"
+                        (click)="closeModal()">
+                    {{'BTN_OK' | translate}}
+                </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-background"></div>
+</modal>

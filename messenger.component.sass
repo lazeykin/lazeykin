@@ -1,0 +1,40 @@
+@import "~app/sass_inc/all"
+
+.full-width-wrapper
+    display: flex
+    flex-direction: column
+    flex: 1
+    position: relative
+    background-color: #fff
+    &::before
+        content: ""
+        display: block
+        position: absolute
+        z-index: 0
+        top: 0
+        bottom: 0
+        right: 0
+        left: 30%
+        background: $bg-gray
+
+.container
+    display: flex
+    flex-direction: row
+    z-index: 1
+    background: $bg-gray
+
+    .app-side-menu
+        width: 200px
+        background: $white
+        margin-left: -15px
+        padding-left: 15px
+
+    .content
+        padding: 20px
+        max-width: 1085px 
+        width: 100% 
+        margin-left: auto 
+        padding-right: 0
+        padding-bottom: 0
+        position: relative
+        z-index: 10

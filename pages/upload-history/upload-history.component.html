@@ -1,0 +1,111 @@
+<section>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>{{'TEXT_NAME' | translate}}</th>
+                    <th class="status">{{'TEXT_STATUS' | translate}}</th>
+                    <th class="result">{{'TEXT_UPLOADED_ERRORS' | translate}}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="noFiles"><td>{{'ERR_NO_FILES_UPLOADED' | translate}}</td><td></td><td></td><td></td><td></td></tr>
+                <tr *ngFor="let item of items; let i = index">
+                    <td>
+                        <label class="custom-control fill-checkbox">
+                            <input 
+                                    type="checkbox"
+                                    class="fill-control-input"
+                                    id="job"
+                                    name="job"
+                                    [(ngModel)]="selectedJobs[i]"
+                                    (ngModelChange)="addJob($event, item, i)"/>
+                                   <span class="fill-control-indicator"></span>
+                        </label>
+                        <div class="file-name">{{item.data_file_name}}</div>
+                        <div class="file-created">{{item.date_created | date: 'dd/MM/yy'}}</div>
+                    </td>
+                    <!-- <td class="date">{{item.date_created | date: 'dd/MM/yy'}}</td> -->
+                    <td class="status">
+                        <div class="progress" 
+                            [ngClass]="{'error': item.has_errors && item.processing_progress === 1, 'completed': item.status === 'uploaded' || (!item.has_errors && item.processing_progress === 1)}"
+                            >
+                            <div *ngIf="item.has_errors && item.processing_progress === 1"
+                                class="progress-value error">
+                                {{'STATUS_ERROR' | translate}}
+                            </div>
+                            <div 
+                                *ngIf="item.status === 'processing' || item.status === 'scheduled'"
+                               >
+                                <span class="loading">Downloading</span>
+                            </div>
+                            <div class="complete" *ngIf="!item.has_errors && item.processing_progress === 1">{{'STATUS_COMPLETE' | translate}}</div>
+                            <div class="uploaded" *ngIf="item.status === 'uploaded'">{{'STATUS_UPLOADED' | translate}}</div>
+                        </div>
+                    </td>
+                    <td class="errors">{{item.valid_entries}}/{{item.error_entries}} 
+                        <div *ngIf="item.has_errors && item.processing_progress === 1" class="error-report">
+                            <img (click)="showErrorReport[i] = !showErrorReport[i]" id="info-icon" src="../../../../assets/images/info-icon.svg" alt="info">
+                            <div class="report-wrapper" [hidden]="!showErrorReport[i]">
+                                {{'TEXT_DOWNLOAD_ERROR_REPORT' | translate}} <a href={{item.report_file_ulr}}>{{'TEXT_HERE' | translate}}</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="control-buttons">
+                        <button 
+                            *ngIf="!(item.status === 'done' && item.destination === 'publish') || item.has_errors"
+                            [disabled]="item.status !== 'uploaded' || item.has_errors || item.destination === 'draft'"
+                            (click)="publish(item.id)">
+                            {{'BTN_PUBLISH' | translate}}
+                        </button>
+                        <span 
+                            class="published" 
+                            *ngIf="item.destination === 'publish' && item.status === 'done' && !item.has_errors">
+                            {{'STATUS_PUBLISHED' | translate}}
+                        </span>
+                        <button *ngIf="!(item.status === 'done' && item.destination === 'draft') || item.has_errors"
+                            [disabled]="item.status !== 'uploaded' || item.destination === 'publish' || item.has_errors"
+                            (click)="saveDraft(item.id)"  
+                            class="draft">
+                            {{'BTN_SAVE_AS_CONCEPT' | translate}}
+                        </button>
+                        <span 
+                            class="draft" 
+                            *ngIf="!item.has_errors && item.destination === 'draft' && item.status === 'done'">
+                            {{'STATUS_SAVED_AS_CONCEPT' | translate}}
+                        </span>
+                        <button 
+                            [disabled]="item.status !== 'scheduled' && item.status !== 'processing'" 
+                            class="cancel"
+                            (click)="cancelJob(item.id)">
+                            {{'BTN_CANCEL' | translate}}
+                        </button>
+                        <button 
+                            class="delete"
+                            [disabled]="item.status === 'scheduled' || item.status === 'processing'"
+                            (click)="deleteJob(item.id)">
+                        </button>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+        <div class="pagination_holder">
+            <app-pagination class="pagi_navi" pageSize="6"
+                (pageChanged)="onPageChanged($event)">
+            </app-pagination>
+        </div>
+    </div>
+    <div class="total" *ngIf="selectedJobsLength > 0">
+        <div class="container">
+            <span>{{selectedJobsLength}} {{'TEXT_FILES' | translate}}</span>
+            <div class="control-buttons">
+                <button [disabled]="!displayCancel" class="cancel" (click)="cancelSelectedItems()">{{'BTN_CANCEL' | translate}}</button>
+                <button [disabled]="!displayDelete" class="delete" (click)="deleteSelectedItems()">{{'BTN_DELETE' | translate}}</button>
+                <button [disabled]="!displayDraft" class="draft" (click)="draftSelectedItems()">{{'BTN_SAVE_DRAFT' | translate}}</button>
+                <button [disabled]="!displayPublish" class="publish" (click)="publishSelectedItems()">{{'BTN_PUBLISH' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</section>

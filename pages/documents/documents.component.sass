@@ -1,0 +1,220 @@
+section 
+    background-color: #fff
+    max-width: 682px
+    width: 100%
+    max-height: 645px 
+    height: 100%
+    padding: 11px 20px
+    .title-container 
+        display: flex 
+        flex-direction: row 
+        flex-wrap: wrap
+        justify-content: space-between
+    h2 
+        font-size: 16px
+        font-weight: normal
+        font-style: normal
+        font-stretch: normal
+        line-height: normal
+        letter-spacing: normal
+        color: #33333a
+        display: inline-block
+    input#file 
+        display: none
+    .table-wrapper, .no-files 
+        margin-top: 26px
+    .table-wrapper 
+        // height: 380px
+        height: 510px
+        width: 100%
+        overflow: hidden
+        overflow-y: auto
+        padding-right: 10px
+        &::-webkit-scrollbar
+            width: 6px
+        &::-webkit-scrollbar-track
+            background-color: rgba(237, 239, 244, 0.48)
+            border-radius: 3px 
+        &::-webkit-scrollbar-thumb 
+            background-color: rgba(184, 191, 211, 0.48)
+            border-radius: 3px
+    table 
+        width: 100% 
+        tr 
+            border-bottom: 1px solid #edeff4
+            td 
+                padding: 10px 0
+                font-size: 16px 
+                font-weight: normal 
+                font-style: normal 
+                font-stretch: normal 
+                line-height: normal 
+                letter-spacing: normal 
+                color: #33333a 
+                &.doc-del 
+                    text-align: right
+                    color: #4099d5
+                    padding-right: 20px
+                    span
+                        cursor: pointer
+                &.doc-name 
+                    > div 
+                        width: 350px 
+                        overflow: hidden
+                        text-overflow: ellipsis
+                        white-space: nowrap
+                        cursor: pointer
+                        a 
+                            text-decoration: none 
+                            color: #33333a
+                &.doc-date 
+                    width: 100px
+    form 
+        max-width: 298px
+        label 
+            font-size: 16px 
+            font-weight: normal 
+            font-style: normal 
+            font-stretch: normal 
+            line-height: normal 
+            letter-spacing: normal 
+            color: #33333a 
+            margin-bottom: 0
+    button 
+        border: none
+        background-color: transparent 
+        outline: none
+        cursor: pointer
+        text-transform: uppercase
+        min-width: 180px
+        height: 30px
+        padding: 0 10px
+        border-radius: 2px
+        &.upload-doc
+            min-width: 180px
+            height: 30px
+            border: solid 1px #4099d5
+            font-size: 12px 
+            font-weight: 600 
+            font-style: normal 
+            font-stretch: normal 
+            line-height: 30px
+            letter-spacing: normal 
+            color: #4099d5 
+            margin-left: auto
+            margin-right: 10px
+            transition: .2s ease all
+            &:hover
+                background-color: #e6f2fa
+            img 
+                height: 14px
+                width: 11px
+                margin-right: 4px
+                margin-top: -3px
+            i 
+                margin-right: 4px
+                display: block
+        &.add 
+            background-color: #43b05c
+            color: #fff
+            font-size: 12px 
+            font-weight: 600 
+            font-style: normal 
+            font-stretch: normal 
+            line-height: 30px
+            letter-spacing: normal 
+            text-align: center 
+            margin-top: 7px
+
+span.error 
+    font-size: 12px 
+    font-weight: 600 
+    color: #d0021b
+    display: block
+    margin: 10px 0
+
+.remove 
+    width: 15px
+    height: 15px
+    cursor: pointer
+
+modal .modal .modal-body 
+    min-height: 280px
+.modal 
+    .image 
+        line-height: 47px
+        text-align: left
+        display: flex 
+        img 
+            margin-right: 15px
+            align-self: flex-start
+    .message 
+        font-style: normal 
+        font-stretch: normal 
+        line-height: normal 
+        letter-spacing: 1.8px 
+        color: #56585b 
+        text-align: left
+        display: inline-block
+        vertical-align: middle
+        font-size: 24px
+        font-weight: 600
+    .buttons 
+        display: flex 
+        flex-direction: row 
+        position: absolute
+        bottom: 25px
+        right: 25px
+    button:not(.closeModal)
+        outline: none 
+        border: none 
+        cursor: pointer 
+        min-width: 128px
+        height: 31px 
+        border-radius: 2px 
+        background-color: transparent
+        border: 1px solid #3f99d4
+        font-weight: 600 
+        font-style: normal 
+        font-stretch: normal 
+        line-height: 31px 
+        letter-spacing: 2px 
+        text-align: center 
+        color: #ffffff 
+        text-transform: uppercase 
+        font-size: 12px 
+        color: #3f99d4
+        margin-left: auto
+        margin-right: 20px
+    a 
+        outline: none
+        display: inline-block 
+        border: none 
+        cursor: pointer 
+        min-width: 128px
+        height: 31px 
+        border-radius: 2px 
+        background-color: #4099d5
+        font-weight: 600 
+        font-style: normal 
+        font-stretch: normal 
+        line-height: 31px 
+        letter-spacing: 2px 
+        text-align: center 
+        color: #ffffff 
+        text-transform: uppercase 
+        font-size: 12px 
+        color: #fff
+        text-decoration: none
+        &:hover 
+            text-decoration: none
+    .closeModal
+        background-image: url(../../../../../assets/images/ic-close.png)
+        opacity: 0.6
+        background-repeat: no-repeat
+        background-position: center center
+        background-size: cover
+        height: 16px
+        width: 16px
+        top: 20px
+        right: 20px

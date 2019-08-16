@@ -1,0 +1,20 @@
+<nav class="side-menu">
+    <ul>
+        <app-side-menu-item title="{{'MENU_ITEM_DIALOGS' | translate}}">
+                <app-side-menu-sub-item title="{{'MENU_ITEM_ALL' | translate}}" routerLink="all"></app-side-menu-sub-item>
+            <app-side-menu-sub-item title="{{'MENU_ITEM_PRODUCTS' | translate}}" routerLink="products"></app-side-menu-sub-item>
+            <app-side-menu-sub-item title="{{'MENU_ITEM_ORDERS' | translate}}" routerLink="orders"></app-side-menu-sub-item>
+        </app-side-menu-item>
+        <app-side-menu-item title="{{'MENU_ITEM_CONTACTS' | translate}}" routerLink="contacts"></app-side-menu-item>
+        <app-side-menu-item *ngIf="scope =='seller'" title="{{'MENU_ITEM_GROUPS' | translate}}" [is_expanded]="false" (click)="getGroupLink($event)">
+            <app-side-menu-sub-item *ngFor="let group of groups"
+                                    title="{{group.name}}" (click)="onItemLink()" routerLink="group/edit/{{group.id}}">
+            </app-side-menu-sub-item>
+        </app-side-menu-item>
+        <app-side-menu-item *ngIf="scope =='seller'" title="{{'MENU_ITEM_BRANDS' | translate}}" routerLink='brands'></app-side-menu-item>
+        <app-side-menu-item *ngIf="scope =='seller'" title="{{'MENU_ITEM_SALES_IDENTITY' | translate}}" routerLink='sales-identity'></app-side-menu-item>
+        <app-side-menu-item *ngIf="scope =='seller'" title="{{'MENU_ITEM_PREPACKS' | translate}}" routerLink='prepacks'></app-side-menu-item>
+        <app-side-menu-item *ngIf="scope =='seller'" title="{{'MENU_ITEM_UPLOAD_HISTORY' | translate}}" routerLink='upload-history'></app-side-menu-item>
+        <app-side-menu-item *ngIf="scope == 'seller'" title="{{'MENU_ITEM_DOCUMENTS' | translate}}" routerLink="documents"></app-side-menu-item>
+    </ul>
+</nav>

@@ -1,0 +1,74 @@
+<div class="panel-filters">
+  <div class="input-group search">
+    <input [(ngModel)]="searchText" type="text" class="form-control" placeholder="{{'PLACEHOLDER_SEARCH_CONTACT_GROUP' | translate}}"
+           (keyup.enter)="onSearchClick()" maxlength="120">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" (click)="onSearchClick()"><img src="../../../../../assets/images/search.svg" alt="search" /></button>
+    </div>
+  </div>
+  <a [hidden]="!searchText" class="search-clear" (click)="onClearFiltersClick()">{{'BTN_CLEAR_ALL' | translate}}</a>
+  <div class="button-wrapper wrapper">
+    <button class="add_group" (click)="onAddGroup()">{{'BTN_ADD_NEW_GROUP' | translate}}</button>
+  </div>
+</div>
+
+<app-full-page-spinner *ngIf="isLoading"></app-full-page-spinner>
+<div class="table_wrapper">
+<table *ngIf="!isLoading">
+  <tbody>
+  <tr *ngFor="let contactGroup of contactGroups; let i = index;">
+    <td>
+      <label class="custom-control fill-checkbox">
+        <input type="checkbox"
+               class="fill-control-input"
+               [(ngModel)]="selItem[i]"
+               (change)="onSelectedItem(contactGroup.id, selItem[i]) "
+               [ngModelOptions]="{standalone: true}"/>
+        <span class="fill-control-indicator"></span>
+      </label>
+    </td>
+    <td class="name">
+     {{ contactGroup.name }}
+    </td>
+    <td class="members">
+      {{contactGroup.total_contacts}} {{contactGroup.total_contacts === 1 ? ('TEXT_MEMBER' | translate) : ('TEXT_MEMBERS' | translate)}}
+    </td>
+    <td class="description">
+      <div class="descr-wrapper">
+          {{contactGroup.description}}
+      </div>
+      
+    </td>
+    <td class="edit_item">
+      <a [routerLink]="getGroupLink(contactGroup)">
+        <img src="../../../../../assets/images/edit-icon.svg" alt=""> {{'BTN_EDIT' | translate}}
+      </a>
+
+    </td>
+    <td (click)="onGroupDelete(contactGroup)" class="delete_item">
+      <img class="removeItem" src="../../../../../assets/images/deleteIconSimple.png" alt="">{{'BTN_DELETE' | translate}}
+    </td>
+  </tr>
+  </tbody>
+</table>
+</div>
+<div class="placeholder-text" *ngIf="response.count === 0 && !isLoading">
+    <span>{{'ERR_NO_CONTACT_GROUPS' | translate}}</span>
+  </div>
+<div class="placeholder-text" *ngIf="error && !isLoading">
+    <span>{{'ERR_GENERAL' | translate}}</span>
+</div>
+<div class="pagination-wrapper">
+  <app-pagination (pageChanged)="onPageChanged($event)"></app-pagination>
+</div>
+<div class="action-wrapper">
+<div *ngIf="showGroupAction" class="group_action">
+  <p class="items_number">{{count}} {{count === 1 ? ('TEXT_GROUP' | translate): ('TEXT_GROUPS' | translate)}} {{'TEXT_SELECTED' | translate}}</p>
+  <div class="button_container">
+    <button class="delete_button"
+         (click)="deleteGroups()">
+      {{'BTN_DELETE' | translate}}
+    </button>
+  </div>
+</div>
+</div>

@@ -1,0 +1,194 @@
+
+<main role="main" class="wrapper">
+<div class="container">
+  <div class="personal_info">
+    <h4>{{'PROFILE_USER_INFO' | translate}}</h4>
+    <div class="personal_info_wrapper">
+      <div *ngIf="user" class="user-image">
+
+        <img  class="avatar" *ngIf="user.photo"
+             [src]="user.photo.url" [alt]="user.full_name">
+        <img class="avatar" *ngIf="user === null ||
+                    !user.photo" src="https://image.flaticon.com/icons/svg/149/149071.svg" [alt]="
+                    'user'">
+      </div>
+      <div class="info">
+        <table>
+          <tr *ngIf="user.first_name && user.last_name">
+
+            <td>
+              <span>{{'LABEL_NAME' | translate}}</span>
+            </td>
+            <td class="person_info">
+              <span>
+                <span *ngIf="user.first_name.length > 10 && user.last_name.length < 10">
+                  {{(user.first_name | slice:0:10) + "..." + " " + (user.last_name)}}
+                </span>
+                <span *ngIf="user.last_name.length > 10 && user.first_name.length < 10">
+                  {{(user.first_name) + " " + (user.last_name | slice:0:10)+ "..."}}
+                </span>
+                <span *ngIf="user.first_name.length > 10 && user.last_name.length > 10">
+                  {{(user.first_name | slice:0:10) + "..." + " " + (user.last_name | slice:0:10) + "..."}}
+                </span>
+                <span *ngIf="user.first_name.length < 10 && user.last_name.length < 10">
+                  {{user.first_name + " " + user.last_name}}
+                </span>
+                <div class="user-rating">
+                    {{user.average_rating | number: '1.1-1'}} <i class="fa fa-star"></i>
+                </div>
+                </span>
+            </td>
+          </tr>
+          <tr *ngIf="company.address.city">
+
+            <td>
+              <span>{{'LABEL_CITY' | translate}}</span>
+            </td>
+            <td class="person_info">
+              <span>{{company.address.city | titlecase }}</span>
+            </td>
+          </tr>
+          <tr *ngIf="company.address.country">
+            <td>
+              <span>{{'LABEL_COUNTRY' | translate}}</span>
+            </td>
+            <td class="person_info">
+              <span>{{country.name | titlecase }}</span>
+            </td>
+          </tr>
+          <tr *ngIf="user.email">
+            <td>
+              <span>{{'LABEL_EMAIL' | translate}}</span>
+            </td>
+            <td class="person_info">
+              <span>{{user.email}}</span>
+            </td>
+          </tr>
+          <tr *ngIf="company.website_address">
+            <td>
+              <span>{{'LABEL_WEBSITE' | translate}}</span>
+            </td>
+            <td class="person_info">
+              <a class="web" [href]="company.website_address">{{company.website_address}}</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="contact_groups">
+      <h2>{{'PROFILE_CONTACT_GROUP_LIST' | translate}}</h2>
+      <p *ngIf="!groups.length">{{'ERR_NO_CONTACT_GROUP' | translate}}</p>
+      <p *ngIf="error">{{'ERR_GENERAL' | translate}}</p>
+      <div class="table-wrapper">
+      <table *ngIf="!message" class="grop_table">
+        <tr *ngFor="let group of groups">
+          <td class="group-name">{{group.name}}</td>
+          <td class="remove_item">
+            <a href="javascript:void(0)" (click)="onItemRemove(group)">{{'BTN_REMOVE' | translate}}</a>
+          </td>
+        </tr>
+      </table>
+      </div>
+    </div>
+  </div>
+  <div class="company_info">
+    <h4>{{'PROFILE_COMPANY_INFO' | translate}}</h4>
+    <table>
+      <tr *ngIf="company.name">
+
+        <td>
+          <span>{{'LABEL_COMPANY_NAME' | translate}}</span>
+        </td>
+        <td class="person_info">
+          <span>
+            <span *ngIf="company.name.length > 15">
+            {{(company.name | slice:0:15) + "..."}}
+            </span>
+             <span *ngIf="company.name.length < 15">
+            {{company.name}}
+            </span>
+            <div class="user-rating">
+                {{user.average_rating | number: '1.1-1'}} <i class="fa fa-star"></i>
+            </div>
+          </span>
+        </td>
+      </tr>
+      <tr *ngIf="company.address.city">
+
+        <td>
+          <span>{{'LABEL_CITY' | translate}}</span>
+        </td>
+        <td class="person_info">
+          <span>{{company.address.city | titlecase }}</span>
+        </td>
+      </tr>
+      <tr *ngIf="company.address.country">
+        <td>
+          <span>{{'LABEL_COUNTRY' | translate}}</span>
+        </td>
+        <td class="person_info">
+          <span>{{country.name | titlecase }}</span>
+        </td>
+      </tr>
+      <tr *ngIf="user.email">
+        <td>
+          <span>{{'LABEL_EMAIL' | translate}}</span>
+        </td>
+        <td class="person_info">
+          <span>{{user.email}}</span>
+        </td>
+      </tr>
+      <tr *ngIf="company.website_address">
+        <td>
+          <span>{{'LABEL_WEBSITE' | translate}}</span>
+        </td>
+        <td class="person_info">
+            <a class="web" [href]="company.website_address">{{company.website_address}}</a>
+        </td>
+      </tr>
+      <tr *ngIf="company.vat_number">
+        <td>
+          <span>{{'LABEL_VAT' | translate}}</span>
+        </td>
+        <td class="person_info">
+          <span>{{company.vat_number}}</span>
+        </td>
+      </tr>
+      <tr *ngIf="company.address">
+        <td>
+          <span>{{'LABEL_ADDRESS' | translate}}</span>
+        </td>
+        <td class="person_info address">
+          <span *ngIf="company.address.street_name">{{company.address.street_name}} str, </span>
+          <span *ngIf="company.address.street_number &&
+          company.address.street_number !=='-'">{{company.address.street_number}}</span>
+          <span *ngIf="company.address.zip">
+            {{company.address.zip}}
+          </span>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+</main>
+<modal id="custom-modal-8">
+  <div class="modal">
+    <div class="modal-body">            
+      <button (click)="closeModal('custom-modal-8');"
+              class="closeModal">
+        <i class="fa fa-close"></i>
+      </button>
+      <div class="content">
+        <div class="image">
+          <img src="assets/images/sucess.png"
+               alt="logo">
+        </div>
+        <div>
+          {{'MODAL_CONTACT_GROUP_REMOVED' | translate}}
+        </div>
+      </div>
+    </div>
+  </div>
+   
+  <div class="modal-background"></div>
+</modal>

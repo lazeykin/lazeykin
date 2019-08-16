@@ -1,0 +1,237 @@
+<form name="form"
+      class="form groupForm"
+      (ngSubmit)="onEditGroup()"
+      [formGroup]="form_group"
+      (keyup.enter)="$event.preventDefault()"
+      (keydown.enter)="$event.preventDefault()"
+      validate>
+    <div class="group_description">
+        <app-input-text label="{{'LABEL_GROUP_NAME' | translate}}"
+                        placeholder="{{'PLACEHOLDER_GROUP_NAME' | translate}}" formControlName="name">
+
+        </app-input-text>
+
+        <app-input-textarea [styles]="{'max-height': '161px', 'height': '161px'}" label="{{'LABEL_DESCRIPTION' | translate}}" placeholder="{{'PLACEHOLDER_DESCRIPTION' | translate}}" formControlName="description">
+
+        </app-input-textarea>
+    </div>
+    <div class="groups-wrapper">
+        <div class="contact-filters">
+            <button type="button" [ngClass]="{'active': activeFilter === 'all'}" (click)="filterCategory('all')">{{'FILTER_ALL' | translate}}</button>
+            <button type="button" [ngClass]="{'active': activeFilter === 'shoonic'}" (click)="filterCategory('shoonic')">{{'FILTER_SHOONIC_CONTACTS' | translate}}</button>
+            <button type="button" [ngClass]="{'active': activeFilter === 'other'}" (click)="filterCategory('other')">{{'FILTER_OTHER_CONTACTS' | translate}}</button>
+        </div>
+        <div class="panel-filters">
+            <div class="input-group search">
+                <input [(ngModel)]="searchText" type="text" class="form-control" placeholder="{{'PLACEHOLDER_SEARCH_NAME_OR_COMPANY' | translate}}"
+                       (keyup.enter)="onSearchClick()" [ngModelOptions]="{standalone: true}" maxlength="120">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" (click)="onSearchClick()"><img src="../../../../../assets/images/search.svg" alt="search" /> </button>
+                </div>
+            </div>
+            <a *ngIf="searchText" class="search-clear" (click)="onClearFiltersClick()">{{'BTN_CLEAR_ALL' | translate}</a>
+            <div class="button-wrapper wrapper">
+                <button class="add-contact" type="button" (click)="onExistingContactAdd()">{{'BTN_ADD_FROM_CONTACTS' | translate}}</button>
+                <button class="add-contact" type="button" (click)="onNewContactAdd()">{{'BTN_ADD_NEW_CONTACT' | translate}}</button>
+            </div>
+        </div>
+
+        <app-full-page-spinner *ngIf="isLoading"></app-full-page-spinner>
+
+        <div class="placeholder-text" *ngIf="!contacts.length && !isLoading">
+            <span>{{'ERR_NO_CONTACT' | translate}}</span>
+        </div>
+        <div class="placeholder-text" *ngIf="error">
+            <span>{{'ERR_GENERAL' | translate}}</span>
+        </div>
+        <div class="table_wrapper" *ngIf="contacts.length">
+        <table>
+            <tr *ngFor="let contact of contacts; let i = index" class="contact-item">
+                <td>
+                    <label class="custom-control fill-checkbox">
+                        <input type="checkbox"
+                               class="fill-control-input"
+                               [(ngModel)]="selItem[i]"
+                               (change)="onSelectedItem(contact.id, selItem[i]) "
+                               [ngModelOptions]="{standalone: true}"/>
+                        <span class="fill-control-indicator"></span>
+                    </label>
+                </td>
+                <td class="avatar">
+                    <!-- todo: replace default avatar-->
+                    <div>
+                        <img    *ngIf="contact.user !== null && contact.user.photo"
+                                [src]="contact.user.photo.url" [alt]="contact.user.full_name">
+                        <img    *ngIf="!contact.user ||
+                                !contact.user.photo" src="https://image.flaticon.com/icons/svg/149/149071.svg" [alt]="'user'">
+                    </div>
+                </td>
+                <td class="info" *ngIf="contact.non_registered_user_email !== null">
+                    <span>{{contact.non_registered_user_email}}</span>
+                </td>
+                <td class="info" *ngIf="contact.user !== null">
+                    <span class="name">{{contact.user.full_name}}</span><br/>
+                    <span class="company">{{contact.user.company_name}}</span>
+                </td>
+                <td class="control-buttons">
+                    <div>
+                        <button 
+                            type="button"
+                            class="control-btn groups" 
+                            [disabled]="!contact.user"
+                            routerLink="/dashboard/messenger/group/{{cg_id}}/user/{{contact.id}}">
+                            {{'BTN_VIEW_GROUPS' | translate}}
+                        </button>
+                        <button 
+                            type="button"
+                            class="control-btn orders" 
+                            [disabled]="!contact.user" 
+                            [routerLink]="['/dashboard/messenger/orders']" 
+                            [queryParams]="contact.user ? {'search': 'user:'+contact.user.id} : undefined">
+                            {{'BTN_VIEW_ORDERS' | translate}}
+                        </button>
+                        <button 
+                            type="button"
+                            class="control-btn dialogs" 
+                            [disabled]="!contact.user" 
+                            [routerLink]="['/dashboard/messenger/products']" 
+                            [queryParams]="contact.user ? {'search': 'user:'+contact.user.id} : undefined">
+                            {{'BTN_VIEW_DIALOGS' | translate}}
+                        </button>
+                        <button
+                            type="button"
+                            class="control-btn remove"
+                            (click)="onRemoveContact(contact.id)">
+                            {{'BTN_REMOVE' | translate}}
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <div [ngClass]="'pagination_holder ' + ((isLoading || (message && !isLoading))?'hidden':'')">
+            <app-pagination (pageChanged)="onPageChanged($event)"></app-pagination>
+        </div>
+    </div>
+    <div class="action-wrapper">
+        <div class="group_action">
+            <div *ngIf="showGroupAction" class="items_number">
+                {{count}} {{count === 1 ? ('TEXT_CONTACT' | translate) : ('TEXT_CONTACTS' | translate)}} {{'TEXT_SELECTED' | translate}}
+                <button type="button" class="remove_button" (click)="removeMultipleContacts()">{{'BTN_REMOVE' | translate}}</button>
+            </div>
+            <button type="submit" class="save_button">{{'BTN_SAVE' | translate}}</button>
+        </div>
+    </div>
+</form>
+<app-modal-view [group]="form_contact" (saveForm)="onSubmit()"
+                (cancelForm)="onCancel()"></app-modal-view>
+<modal id="custom-modal-6">
+    <div class="modal">
+        <div class="modal-body">            
+            <button (click)="closeModal('custom-modal-6');"
+                    class="closeModal">
+                <i class="fa fa-close"></i>
+            </button>
+            <div class="content">
+                <div class="image">
+                    <img src="assets/images/sucess.png"
+                         alt="logo">
+                </div>
+                <div>
+                    {{'MODAL_CONTACT_GROUP_UPDATED' | translate}}
+                </div>
+            </div>
+        </div>
+    </div>
+     
+    <div class="modal-background"></div>
+</modal>
+
+<modal id="modal-add-to-group">
+        <div class="modal">
+            <div class="modal-body">            
+                <button (click)="closeModal('modal-add-to-group');"
+                        class="closeModal">
+                        <span class="cart_modal_close_button">&times;</span>
+                </button>
+                <div class="content" *ngIf="!showSuccess">
+                    <h1>{{'MODAL_ADD_CONTACT_TO_GROUP' | translate}}</h1>
+                    <form
+                        (ngSubmit)="addContactsToGroup()"
+                        validate>
+                        <div class="wrapper">
+                            <div class="contact-filters">
+                                    <button type="button" [ngClass]="{'active': activeFilter === 'all'}" (click)="filterCategoryAll('all')">{{'FILTER_ALL_CONTACTS' | translate}}</button>
+                                    <button type="button" [ngClass]="{'active': activeFilter === 'shoonic'}" (click)="filterCategoryAll('shoonic')">{{'FILTER_SHOONIC_CONTACTS' | translate}}</button>
+                                    <button type="button" [ngClass]="{'active': activeFilter === 'other'}" (click)="filterCategoryAll('other')">{{'FILTER_OTHER_CONTACTS' | translate}}</button>
+                            </div>
+                            <div class="contacts-block">
+                                <a href="javascript:void(0)" class="choose-all" (click)="selectAllContacts()">{{'BTN_CHOOSE_ALL' | translate}}</a>
+                                <span *ngIf="!allContactList.length">{{'ERR_NO_CONTACT' | translate}}</span>
+
+                                <table *ngIf="allContactList.length">
+                                    <tr *ngFor="let contact of allContactList; let i = index" class="contact-item">
+                                        <td class="avatar">
+                                                <!-- todo: replace default avatar-->
+                                                <div>
+                                                    <img    *ngIf="contact !== null && contact.photo"
+                                                            [src]="contact.photo.url" [alt]="contact.full_name">
+                                                    <img    *ngIf="!contact ||
+                                                            !contact.photo" src="https://image.flaticon.com/icons/svg/149/149071.svg" [alt]="'user'">
+                                                </div>
+                                            </td>
+                                            <td class="info" *ngIf="contact === null">
+                                                <span>{{contact.non_registered_user_email}}</span>
+                                            </td>
+                                            <td class="info" *ngIf="contact !== null">
+                                                <span class="name">{{contact.full_name}}</span>
+                                                <span class="company">{{contact.company_name}}</span>
+                                            </td>
+                                            <td>
+                                                    <label class="custom-control fill-checkbox">
+                                                        <input type="checkbox"
+                                                                class="fill-control-input"
+                                                                [(ngModel)]="contactItem[i]"
+                                                                (change)="onSelectedContact(contact.id, contactItem[i]) "
+                                                                [ngModelOptions]="{standalone: true}"/>
+                                                        <span class="fill-control-indicator"></span>
+                                                    </label>
+                                                </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    <div class="modal-control">
+                        <button
+                                type="button"
+                                class="btn cancel"
+                                (click)="closeModal('modal-add-to-group')">
+                            {{'BTN_CANCEL' | translate}}
+                        </button>
+                        <button 
+                                class="btn add"
+                                type="submit">
+                            {{'BTN_ADD' | translate}}
+                        </button>
+                    </div>
+                    </form>
+                </div>
+                <div class="content success" *ngIf="showSuccess">
+                    <div class="image">
+                        <img src="assets/images/sucess.png" alt="logo">
+                    </div>
+                    <h1>{{'MODAL_CONTACTS_ADDED' | translate}}</h1>
+                    <div class="modal-control">
+                    <button
+                            type="button"
+                            class="btn cancel"
+                            (click)="closeModal('modal-add-to-group')">
+                       {{'BTN_OK' | translate}}
+                    </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-background"></div>
+    </modal>

@@ -1,0 +1,261 @@
+<div class="wrapper">
+<div class="contact-filters">
+    <button type="button" [ngClass]="{'active': statusFilter === 'all'}" (click)="onStatusFilter('all')">{{'FILTER_ALL' | translate}}</button>
+    <button type="button" [ngClass]="{'active': statusFilter === 'read'}" (click)="onStatusFilter('read')">{{'FILTER_READ' | translate}}</button>
+    <button type="button" [ngClass]="{'active': statusFilter === 'unread'}" (click)="onStatusFilter('unread')">{{'FILTER_NOT_READ' | translate}}</button>
+</div>
+<div class="panel-filters">
+    <app-select-filter *ngIf="searchTypeTranslated"
+        class="message-status" 
+        [options]="searchTypeTranslated" 
+        label=""
+        (filter)="onTypeFilter($event)" >
+    </app-select-filter>
+    <div class="input-group search">
+        <input [(ngModel)]="searchText" type="text" class="form-control" placeholder="{{'PLACEHOLDER_SEARCH_BY_ORDER' | translate}}"
+                (keyup.enter)="onSearchClick()" maxlength="120">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" (click)="onSearchClick()"><img src="../../../../../assets/images/search.svg" alt=""></button>
+        </div>
+    </div>
+    <a *ngIf="searchText" class="search-clear" (click)="onClearFiltersClick()">{{'BTN_CLEAR_ALL' | translate}}</a>
+</div>
+<app-full-page-spinner *ngIf="isLoading"></app-full-page-spinner>
+<table *ngIf="!isLoading">
+    <ng-container *ngIf="dialogs">
+    
+        <tr *ngFor="let dialog of dialogs; let i = index"
+            [class]="getOrderStatusAsClass(dialog) + ' '
+                    + (dialog.unread_messages_count == 0?'read':'unread')"
+            [attr.data-value]="dialog.id"
+            [ngClass]="{'order': dialog.order, 'product': dialog.product}"
+            [routerLink]="getDialogLink(dialog)"
+            >
+            {{prependHead(i, dialog)}}
+            <ng-container *ngIf="dialog.product">
+                <td><div></div></td>
+                <td class="product-img">
+                    <div>
+                        <img *ngIf="!dialog.product.default_image.thumbnail_200" [src]="dialog.product.default_image.url" />
+                        <img *ngIf="dialog.product.default_image.thumbnail_200" [src]="dialog.product.default_image.thumbnail_200" />
+                    </div>
+                </td>
+                <td  class="product-name">
+                    <a [routerLink]="getProductLink(dialog)">{{ dialog.product.title }}</a><br/>
+                    <span>Ref.{{ dialog.product.ref_number }}</span>
+                    <div class="customerRef">
+                        CRef. {{dialog.product.customer_ref_number ? dialog.product.customer_ref_number : '-'}}
+                    </div>
+                </td>
+                <td class="contact">
+                    <a>{{getDialogOtherUser(dialog).full_name}}</a><br/>
+                    <span>{{getDialogOtherUser(dialog).company_name}}</span>
+                </td>
+                <td  class="message" colspan="3">
+                    <p *ngIf="dialog.last_message">
+                        {{ getMessageText(dialog.last_message) | translate}}
+                    </p>
+                </td>
+                <td class="date">
+                    <span *ngIf="dialog.last_message">{{dialog.last_message.date_created | date : 'dd/MM/yyyy\'\n\'HH:mm' }}</span>
+                </td>
+            </ng-container>
+            <ng-container *ngIf="dialog.order">
+                <td>
+                    <div>
+                        <label class="custom-control fill-checkbox" (click)="$event.stopPropagation()">
+                            <input type="checkbox"
+                                    class="fill-control-input"
+                                    id="remember"
+                                    name="remember"
+                                    [(ngModel)]="selectItem[i]"
+                                    (click)="$event.stopPropagation()"
+                                    (ngModelChange)="addItemsOrder($event, dialog.order, i)"
+                                    #remember="ngModel"/>
+                            <span class="fill-control-indicator"></span>
+                        </label>
+                    </div>
+                </td>
+                <td class="order-id">
+                    {{dialog.order.id}}
+                    <br/>
+                    <span>{{formatDate(dialog.order.date_created)}}</span>
+                </td>
+                <td class="order-status">{{getOrderStatusAsText(dialog)}}</td>
+                <td class="contact">
+                    <a>{{getDialogOtherUser(dialog).full_name}}</a><br/>
+                    <span>{{getDialogOtherUser(dialog).company_name}}</span>
+                </td>
+                <td class="order-products">
+                    {{ dialog.order.items.length }}<br/>
+                    <span *ngIf="dialog.order.items.length==1">{{'TEXT_PRODUCT' | translate}}</span>
+                    <span *ngIf="dialog.order.items.length!=1">{{'TEXT_PRODUCTS' | translate}}</span>
+                </td>
+                <td class="order-sizes">
+                        {{getOrderTotalPairs(dialog.order)}} {{'TEXT_PAIRS' | translate}}<br/>
+                        {{getOrderTotalSizes(dialog.order)}} {{'TEXT_SIZES' | translate}}<br/>
+                        <!--<button class="edit"-->
+                                <!--(click)="onEditOrderClicked(dialog.order.id, $event)"-->
+                                <!--[disabled]="getOrderPersonalStatus(dialog.order) != 0">-->
+                            <!--<i class="fa fa-edit"></i>Edit-->
+                        <!--</button>-->
+                </td>
+                <td class="order-total-cost">
+                    {{ dialog.order.total_price_with_discount | rounding }} eur<br/>
+                    <span *ngIf="dialog.order.total_price != dialog.order.total_price_with_discount">{{ dialog.order.total_price | rounding }} eur</span>
+                </td>
+                <td class="control-buttons">
+                    <div class="wrapper">
+                        <!--<button (click)="onViewOrderClicked(dialog.order.id, $event)"  -->
+                                <!--class="view">-->
+                            <!--<i class="fa fa-eye"></i>-->
+                            <!--{{'BTN_VIEW' | translate}}-->
+                        <!--</button>-->
+                        <button (click)="openModal($event, 'confirm-accept', dialog)" 
+                                *ngIf="dialog.order.summary_status === 0" 
+                                [disabled]="getOrderPersonalStatus(dialog.order) != 0" 
+                                class="accept">
+                            <i class="fa fa-check"></i>
+                            {{'BTN_ACCEPT' | translate}}
+                        </button>
+                        <button (click)="openModal($event, 'confirm-decline', dialog)" 
+                                [disabled]="getOrderPersonalStatus(dialog.order) != 0" 
+                                *ngIf="dialog.order.summary_status === 0" 
+                                class="decline">
+                            <i class="fa fa-times"></i>
+                            {{'BTN_DECLINE' | translate}}
+                        </button>
+                        <button (click)="openModal($event, 'confirm-archive', dialog)" 
+                                [disabled]="getOrderPersonalStatus(dialog.order) == 0" 
+                                class="archive"
+                                *ngIf="!dialog.order.is_archived && dialog.order.summary_status > 0">
+                            <i class="fa fa-archive"></i>
+                            {{'BTN_ARCHIVE' | translate}}
+                        </button>
+                        <button (click)="onUnarchiveOrderClicked(dialog.order.id, $event)" 
+                                [disabled]="getOrderPersonalStatus(dialog.order) == 0" 
+                                *ngIf="dialog.order.is_archived"
+                                class="archive undo">
+                            <i class="fa fa-archive"></i>
+                            {{'BTN_UNARCHIVE' | translate}}
+                        </button>
+                        <div *ngIf="dialog.order.summary_status == 1 && !dialog.order.score" id="rating_bar">
+                            <span id="rate_1" (click)="rateOrder(dialog.order.id, 1, $event)"></span>
+                            <span id="rate_2" (click)="rateOrder(dialog.order.id, 2, $event)"></span>
+                            <span id="rate_3" (click)="rateOrder(dialog.order.id, 3, $event)"></span>
+                            <span id="rate_4" (click)="rateOrder(dialog.order.id, 4, $event)"></span>
+                            <span id="rate_5" (click)="rateOrder(dialog.order.id, 5, $event)"></span>
+                        </div>
+                        <div class="user-rating" *ngIf="dialog.order.score">
+                            {{getRating(dialog) | number: '1.1-1'}} <i class="fa fa-star"></i>
+                        </div>
+                    </div>
+                </td>
+            </ng-container>
+        </tr>
+        </ng-container>
+</table>
+<div class="placeholder-text" *ngIf="message && !isLoading">
+    <span>{{message}}</span>
+</div>
+    
+    
+<div [ngClass]="'pagination_holder ' + ((isLoading || (message && !isLoading))?'hidden':'')" >
+    <app-pagination (pageChanged)="onPageChanged($event)"></app-pagination>
+</div>
+<div *ngIf="displayOrderPanel"
+        class="bottomItemsSelect">
+    <div class="container">
+        <div class="itemsQuantity">
+            {{selectItems.length}} <span>{{'TEXT_ORDERS' | translate}}</span> {{'TEXT_SELECTED' | translate}}
+        </div>
+        <div class="orderButtons">
+            <button [disabled]="!displayDecline" class="decline-btn order-btn" (click)="openModal($event, 'confirm-decline')">{{'BTN_DECLINE' | translate}}</button>
+            <button [disabled]="!displayAccept" class="accept-btn order-btn" (click)="openModal($event, 'confirm-accept')">{{'BTN_ACCEPT' | translate}}</button>
+            <button [disabled]="!displayArchive" class="archive-btn order-btn" (click)="openModal($event, 'confirm-archive')">{{'BTN_ARCHIVE' | translate}}</button>
+            <button [disabled]="!displayUnarchive" class="archive-btn order-btn" (click)="unarchiveOrders()">{{'BTN_UNARCHIVE' | translate}}</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<modal id="confirm-accept">
+    <div class="modal">
+        <div class="modal-body">
+            <button (click)="closeModal('confirm-accept');" class="closeModal"></button>
+            <div class="top">
+                <div class="circle">!</div>
+                <h2>{{'MODAL_FINAL_APPROVE' | translate}}</h2>
+            </div>
+            <div class="content">
+                <p>{{'MODAL_FINAL_APPROVE_TEXT' | translate}}</p>
+                <div class="buttons">
+                    <button class="cancel" (click)="closeModal('confirm-accept')" [disabled]="isOfferLoading">{{'BTN_CANCEL' | translate}}</button>
+                    <button *ngIf="!multipleOffers" class="accept" (click)="onAcceptOrderClicked()"
+                            [disabled]="isOfferLoading">
+                            {{'BTN_ACCEPT' | translate}}
+                    </button>
+                    <button *ngIf="multipleOffers" class="accept" (click)="acceptOrders()"
+                        [disabled]="isOfferLoading">
+                        {{'BTN_ACCEPT' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-background"></div>
+</modal>
+    
+<modal id="confirm-decline">
+    <div class="modal">
+        <div class="modal-body">
+            <button (click)="closeModal('confirm-decline');" class="closeModal"></button>
+            <div class="top">
+                <div class="circle">!</div>
+                <h2>{{'MODAL_FINAL_DECLINE' | translate}}</h2>
+            </div>
+            <div class="content">
+                <p>{{'MODAL_FINAL_DECLINE_TEXT' | translate}}</p>
+                <div class="buttons">
+                    <button class="cancel" (click)="closeModal('confirm-decline')" [disabled]="isOfferLoading">{{'BTN_CANCEL' | translate}}</button>
+                    <button *ngIf="multipleOffers" class="decline" (click)="declineOrders()"
+                            [disabled]="isOfferLoading">
+                            {{'BTN_DECLINE' | translate}}
+                    </button>
+                    <button *ngIf="!multipleOffers" class="decline" (click)="onDeclineOrderClicked()"
+                            [disabled]="isOfferLoading">
+                            {{'BTN_DECLINE' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-background"></div>
+</modal>
+
+<modal id="confirm-archive">
+    <div class="modal">
+        <div class="modal-body">
+            <button (click)="closeModal('confirm-archive');" class="closeModal"></button>
+            <div class="top">
+                <div class="circle"></div>
+                <h2>{{'MODAL_ARCHIVING' | translate}}</h2>
+            </div>
+            <div class="content">
+                <p>{{'MODAL_ARCHIVING_TEXT' | translate}}</p>
+                <div class="buttons">
+                    <button class="cancel" (click)="closeModal('confirm-archive')" [disabled]="isOfferLoading">{{'BTN_CANCEL' | translate}}</button>
+                    <button *ngIf="multipleOffers" class="archive" (click)="archiveOrders()"
+                            [disabled]="isOfferLoading">
+                            {{'BTN_ARCHIVE' | translate}}
+                    </button>
+                    <button *ngIf="!multipleOffers" class="archive" (click)="onArchiveOrderClicked()"
+                            [disabled]="isOfferLoading">
+                            {{'BTN_ARCHIVE' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-background"></div>
+</modal>

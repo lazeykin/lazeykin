@@ -1,0 +1,245 @@
+.personal_info
+  padding: 30px 27px 30px 20px
+  max-width: 579px 
+  margin-right: 0px
+  margin-bottom: 20px
+  width: 100%
+  background-color: #fff
+  h4 
+    font-size: 16px  
+    font-weight: 600  
+    font-style: normal  
+    font-stretch: normal  
+    line-height: normal  
+    letter-spacing: normal  
+    text-align: justify  
+    color: #33333a  
+  & .personal_info_wrapper
+    display: flex
+    margin-bottom: 30px
+  & .info
+    margin-left: 19px
+  .user-image 
+    width: 170px 
+    min-width: 170px
+    height: 170px
+    overflow: hidden 
+    display: flex 
+    justify-content: center 
+    align-content: center
+    .avatar 
+      width: 100% 
+      object-fit: contain 
+
+table 
+  tr 
+    &:last-child
+      border-bottom: none
+
+.company_info
+  background-color: #fff
+  min-height: 340px
+  max-height: 370px
+  height: 100%
+  max-width: 460px
+  width: 100%
+  padding: 29px 42px 57px 42px
+  table 
+    width: 100%
+  h4 
+    font-size: 16px  
+    font-weight: 600  
+    font-style: normal  
+    font-stretch: normal  
+    line-height: normal  
+    letter-spacing: normal  
+    text-align: justify  
+    color: #33333a 
+  tr 
+    td
+      padding-top: 10px 
+      padding-bottom: 8px
+      &.person_info 
+        span 
+          text-overflow: ellipsis
+          overflow: hidden
+          white-space: nowrap
+
+      &.person_info
+        &.address 
+          span
+            display: inline
+      &:first-child 
+        font-size: 12px  
+        font-weight: 600  
+        font-style: normal  
+        font-stretch: normal  
+        line-height: normal  
+        letter-spacing: normal  
+        text-align: justify  
+        color: #33333a   
+        width: 100px !important
+        display: inline-block
+      &:nth-child(2)
+        font-size: 14px  
+        font-weight: normal  
+        font-style: normal  
+        font-stretch: normal  
+        line-height: normal  
+        letter-spacing: normal  
+        text-align: justify  
+        color: #33333a 
+         
+.personal_info 
+  .person_info 
+    padding-left: 80px
+    width: 280px !important 
+    display: inline-block  
+    box-sizing: content-box   
+
+.wrapper
+  background-color: #edeff4
+  height: calc(527px + 60vh)
+  > .container 
+    padding: 0
+.container
+  padding-top: 50px
+  display:  flex
+  justify-content: space-between
+  flex-wrap: wrap
+
+.person_info
+  width: 250px
+  padding-left: 80px
+  font-size: 14px  
+  font-weight: normal  
+  font-style: normal  
+  font-stretch: normal  
+  line-height: normal  
+  letter-spacing: normal  
+  text-align: justify  
+  color: #33333a  
+  span 
+    max-width: 356px
+    text-overflow: ellipsis
+    overflow: hidden
+    white-space: nowrap
+
+tr 
+  td 
+    &:first-child
+      font-size: 12px  
+      font-weight: 600  
+      font-style: normal  
+      font-stretch: normal  
+      line-height: normal  
+      letter-spacing: normal  
+      text-align: justify  
+      color: #33333a  
+    &.group-name
+      font-size: 16px 
+      font-weight: normal 
+      font-style: normal 
+      font-stretch: normal 
+      line-height: normal 
+      letter-spacing: normal 
+      text-align: justify 
+      color: #33333a 
+      padding-top: 10px 
+      padding-bottom: 8px
+      display: block
+      width: 312px 
+      text-overflow: ellipsis
+      overflow: hidden
+      white-space: nowrap
+
+tr
+  border-bottom: 1px solid rgba(237,239,244, 0.5)
+  font-size: 16px
+  font-weight: 600
+  color: #33333a
+  height: 35px
+.grop_table
+  width: 100%
+
+
+.contact_groups 
+  margin-right: 40px
+  padding-right: 20px
+  h2 
+    font-size: 16px 
+    font-weight: 600 
+    font-style: normal 
+    font-stretch: normal 
+    line-height: normal 
+    letter-spacing: normal 
+    text-align: justify 
+    color: #33333a 
+    margin-bottom: 5px
+
+a.web
+  color: #33333a
+  text-decoration: underline 
+  &:hover 
+    text-decoration: none
+
+.remove_item
+  text-align: right !important
+  padding-right: 8px
+  a
+    cursor: pointer
+    font-size: 12px 
+    font-weight: normal 
+    font-style: normal 
+    font-stretch: normal 
+    line-height: normal 
+    letter-spacing: normal 
+    color: #d0021b 
+    text-transform: uppercase
+    text-decoration: none
+    padding-right: 8px
+
+@media screen and (max-width: 1223px) 
+  .container 
+    justify-content: center
+    flex-direction: column
+  .personal_info, .company_info 
+    max-width: 800px
+    margin-right: 0
+
+.table-wrapper 
+  max-height: 245px 
+  margin-right: -20px
+  padding-right: 20px
+  overflow: hidden 
+  overflow-y: auto 
+  &::-webkit-scrollbar
+    width: 9px
+  &::-webkit-scrollbar-track
+    background-color: rgba(237, 239, 244, 0.48)
+    border-radius: 6px 
+  &::-webkit-scrollbar-thumb 
+    background-color: rgba(184, 191, 211, 0.48)
+    border-radius: 6px
+
+
+.user-rating 
+    display: inline-block
+    width: 44px
+    height: 20px
+    border-radius: 11.5px
+    background-color: #33333a
+    line-height: 20px 
+    font-size: 12px
+    font-weight: normal
+    font-style: normal
+    font-stretch: normal
+    letter-spacing: normal
+    color: #ffffff
+    text-align: center
+    margin-left: 3px
+    i 
+        font-size: 10px
+        position: relative
+        display: inline-block
+        top: -1px

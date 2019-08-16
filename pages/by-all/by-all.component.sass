@@ -1,0 +1,615 @@
+.panel-filters
+    padding: 12px 22px
+    background-color: white
+    display: flex
+    text-align: right
+    max-height: 54px
+    app-select-filter 
+        width: 125px
+
+.hidden
+    display: none
+
+.pagination_holder
+    text-align: right
+    padding: 20px
+
+.search
+    width: 490px
+    float: right
+    margin-left: auto
+
+    input
+        font-size: 14px
+        height: 30px
+        border: 1px solid #b8bfd3
+        border-radius: 2px 0 0 2px
+        &::placeholder 
+            color: #b8bfd3
+
+    button
+        background: #b8bfd3
+        color: white
+        border-radius: 0 2px 2px 0
+        border: 0
+        font-size: 12px
+        height: 30px
+        width: 42px
+        padding: 5px 10px
+        i
+            font-size: 1.6em
+
+.search-clear
+    height: 12px
+    font-size: 12px
+    line-height: 30px
+    display: inline-block
+    margin-left: 22px
+    text-transform: uppercase
+    text-decoration: underline !important
+    cursor: pointer
+    letter-spacing: 2px
+    font-weight: 600
+    &:hover 
+        text-decoration: none !important
+
+.contact-filters 
+    width: 100%
+    margin-bottom: 7px 
+    text-align: left
+    button 
+        background-color: transparent 
+        border: none 
+        outline: none 
+        font-size: 12px 
+        font-weight: 600 
+        font-style: normal 
+        font-stretch: normal 
+        line-height: normal 
+        letter-spacing: 1.5px 
+        color: #33333a 
+        text-transform: uppercase
+        transition: .2s all ease
+        margin-right: 19px
+        &.active 
+            color: #4099d5
+            text-decoration: underline 
+            &:hover 
+                text-decoration: none
+        &:hover 
+            cursor: pointer
+            text-decoration: underline
+      
+
+table
+    background: white
+    width: 100%
+    padding: 6px
+    table-layout: fixed
+
+    tr
+        &.product, &.order
+            height: 20px
+            &:hover 
+                background-color: transparent
+                cursor: auto
+    th
+        text-transform: uppercase
+        font-size: 12px
+        color: #b8bfd3
+        padding-bottom: 7px
+        &:last-child 
+            padding-right: 30px 
+            text-align: right
+    tbody
+        margin-top: 7px
+        border-radius: 2px
+        //box-shadow: 0 0 6px 0 rgba(184, 191, 211, 0.5)
+
+    tr.product
+        height: 76px
+        cursor: pointer
+        background-color: white
+        box-shadow: 0 4px 6px 0 rgba(184, 191, 211, 0.5)
+        //border-bottom: 1px solid gray
+
+        &:active, &:focus
+            outline: none
+        &:hover
+            background: #fafafa
+
+        td
+            vertical-align: middle
+            height: 88px
+            text-align: left
+            padding: 6px
+
+            &:first-child
+                padding-left: 12px
+                width: 15px
+
+            &:last-child
+                text-align: right
+                padding-right: 30px
+
+            &.product-name, &.contact
+                font-stretch: normal
+                line-height: normal
+                letter-spacing: normal
+                max-width: 150px 
+                overflow: hidden
+                text-overflow: ellipsis
+                white-space: nowrap
+                padding-right: 20px
+                a
+                    color: black
+                    text-decoration: underline
+                    font-size: 14px
+                    font-weight: 600
+                    font-style: normal
+                    margin-bottom: 2px
+                span
+                    font-size: 12px
+                    font-weight: 300
+                    color: black 
+            &.product-img
+                width: 72px
+                margin-right: 15px 
+                padding-left: 0
+                > div
+                    width: 72px
+                    height: 71px
+                    border-radius: 2px
+                    border: solid 1px #edeff4
+                    overflow: hidden 
+                    display: flex
+                    justify-content: center
+                    align-content: center
+                    img 
+                        object-fit: contain
+                        width: 100%
+            &.product-name
+                width: 150px
+            &.contact 
+                max-width: 200px
+                width: 200px
+                span
+                    font-weight: 400
+                    letter-spacing: 1.2px
+            &.message
+                font-size: 14px
+                color: black
+                font-weight: 400
+                max-width: 350px 
+                width: 350px
+                overflow: hidden
+                white-space: nowrap
+                text-overflow: ellipsis
+                p
+                    margin: 0
+                    font-size: 12px
+                    font-weight: 400
+                    line-height: normal
+                    letter-spacing: normal
+                    text-overflow: ellipsis
+                    width: 100%
+                    overflow: hidden
+
+            &.date
+                vertical-align: middle
+                font-size: 14px
+                font-weight: normal
+                font-style: normal
+                font-stretch: normal
+                color: #030303
+                white-space: pre-wrap
+                text-align: left
+
+    tr
+        td:first-child 
+            div 
+                width: 30px 
+        td:first-child::before
+            content: ""
+            display: inline-block
+            margin: auto
+            width: 15px
+            height: 15px
+            background-color: transparent
+            border-radius: 100%
+
+    tr.unread
+        td:first-child::before
+            background-color: #0076ff
+    tr.order
+        background-color: white
+        cursor: pointer
+
+        &:active, &:focus
+            outline: none
+
+        &:hover
+            background: #fafafa
+
+        &.open
+            box-shadow: 0 4px 6px 0 rgba(184, 191, 211, 0.5), inset 8px 0 0 #f5a623
+            td.order-status
+                color: #f5a623
+                letter-spacing: 0.9px
+            
+
+        &.declined
+            box-shadow: 0 4px 6px 0 rgba(184, 191, 211, 0.5), inset 8px 0 0 #d0021b
+            td.order-status
+                color: #d0021b
+                letter-spacing: 0.9px
+
+        &.approved
+            box-shadow: 0 4px 6px 0 rgba(184, 191, 211, 0.5), inset 8px 0 0 #43b05c
+            td.order-status
+                color: #43b05c
+                letter-spacing: 0.9px
+
+        td
+            vertical-align: middle
+            //height: 76px
+            text-align: left
+            padding: 20px 20px 20px 0
+            border: none
+            font-size: 14px
+            line-height: normal
+            font-weight: 600
+            height: 120px 
+            max-height: 120px 
+            color: #33333a
+
+
+            &:first-child
+                padding-left: 12px
+                width: 15px
+                position: relative
+                label 
+                    position: absolute
+                    top: 0
+                    left: -2px
+                    .fill-control-indicator
+                        width: 18px
+                        height: 18px
+                        border: solid 1px #b8bfd3
+                .custom-control.fill-checkbox .fill-control-input:checked ~ .fill-control-indicator
+                    background-color: #4099d5
+                    border-color: #4099d5
+
+            &:last-child
+                text-align: right
+                padding-right: 30px
+                border-radius: 0 2px 2px 0
+
+            &:first-child
+                padding-left: 20px
+                min-width: 20px
+            span
+                font-weight: normal
+                letter-spacing: 0.8px
+            &.order-total-cost
+                text-transform: uppercase
+                font-size: 16px
+                min-width: 150px
+                span
+                    text-decoration: line-through
+                    font-size: 12px
+            &.order-sizes
+                text-decoration: underline
+                min-width: 150px
+            &.order-id 
+                color: #33333a 
+                font-size: 16px
+                min-width: 100px
+                span 
+                    font-size: 12px 
+                    letter-spacing: 0 
+            &.order-status
+                font-weight: 600
+                text-transform: uppercase
+            &.order-products 
+                font-weight: 600
+                font-size: 14px
+                span 
+                    font-weight: 600
+            &.order-discount 
+                font-weight: 600 
+                font-style: normal 
+                font-stretch: normal 
+                line-height: normal 
+                letter-spacing: 1.4px 
+                text-align: left
+                color: #33333a 
+                min-width: 90px
+                padding-left: 20px
+            &.contact 
+                max-width: 120px
+                overflow: hidden
+                white-space: nowrap
+                text-overflow: ellipsis
+                a 
+                    letter-spacing: 0.8px
+                    font-weight: 600 
+                    font-size: 14px 
+                    span 
+                        font-weight: normal
+.control-buttons
+    .wrapper 
+        width: 130px
+        text-align: left
+table
+    background-color: transparent
+    button
+        line-height: 1.8em
+        width: 85px
+        letter-spacing: 2px
+        white-space: nowrap
+        &:active
+            outline: none
+        &:disabled
+            opacity: 0.3
+
+        &.accept, &.decline, &.edit, &.delete, &.archive, &.view
+            background: none
+            border: none
+            vertical-align: top
+            cursor: pointer
+            text-transform: uppercase
+            font-weight: 600 
+            letter-spacing: 2px 
+            padding: 0
+            text-align: left
+            outline: none 
+            &:focus, &:active 
+                outline: none
+            i 
+                margin-right: 3px
+                font-size: 14px
+        &.archive.undo 
+                text-overflow: ellipsis
+                overflow: hidden
+                width: 100%
+
+        &.accept
+            color: #43b05c
+
+        &.decline
+            color: #d0021b
+            i 
+                margin-right: 5px
+        &.archive, &.view, &.edit 
+            color: #4099d5
+        &.edit
+            padding-left: 0
+            text-align: left
+
+.message-status
+    width: 106px
+    margin-right: 22px
+.wrapper 
+    //height: 100%
+    position: relative
+.bottomItemsSelect
+    width: 100%
+    border-radius: 2px
+    box-shadow: 0 -2px 4px 0 rgba(184, 191, 211, 0.5)
+    background-color: #ffffff
+    height: 80px
+    position: sticky
+    bottom: 0
+    .container 
+        display: flex 
+        flex-direction: row 
+        height: 100%
+        align-items: center
+        justify-content: space-between
+        padding: 0 63px 0 18px
+    .itemsQuantity
+        font-size: 18px 
+        font-weight: 600 
+        font-style: normal 
+        font-stretch: normal 
+        line-height: normal 
+        letter-spacing: 1.8px 
+        color: #33333a 
+    .orderButtons
+        button
+            width: 140px
+            height: 30px
+            border-radius: 2px
+            font-size: 12px 
+            font-weight: 600 
+            font-style: normal 
+            font-stretch: normal 
+            line-height: 30px
+            letter-spacing: 2px 
+            text-align: center 
+            text-transform: uppercase
+            background: none
+            border: none
+            padding: 0
+            transition: .2s ease all
+            &.decline-btn
+                color: #d0021b
+                border: 1px solid #d0021b
+                margin-right: 10px
+            &.accept-btn
+                background-color: #43b05c
+                color: #fff
+                margin-right: 10px
+            &.archive-btn, &.unarchive-btn
+                background-color: #4099d5
+                color: #fff
+            &.archive-btn
+                margin-right: 10px
+            &:disabled
+                background-color: #edeff4 !important
+                cursor: auto
+                border: none !important
+                color: #fff !important
+
+tr.disabled 
+    pointer-events: none
+    *
+        pointer-events: auto
+
+.customerRef  
+    font-size: 10px 
+    font-weight: 300 
+    font-style: italic 
+    font-stretch: normal 
+    line-height: normal 
+    letter-spacing: normal 
+    color: #33333a 
+    position: relative
+    overflow: hidden 
+    text-overflow: ellipsis 
+    white-space: nowrap 
+    width: 100% 
+
+
+#confirm-accept, #confirm-decline, #confirm-archive
+    .circle
+        width: 48px
+        height: 48px 
+        border-radius: 100%
+        color: white 
+        font-size: 40px
+        text-align: center 
+        line-height: 48px
+        margin-right: 18px
+    .closeModal
+        background-image: url(../../../../../assets/images/ic-close.png)
+        opacity: 0.6
+        background-repeat: no-repeat
+        background-position: center center
+        background-size: cover
+        height: 16px
+        width: 16px
+        top: 20px
+        right: 20px
+    .modal-body 
+        padding-top: 62px
+    .top
+        display: flex 
+        flex-direction: row 
+        flex-wrap: wrap 
+        align-items: center
+        h2 
+            font-size: 24px
+            font-weight: 600
+            font-style: normal
+            font-stretch: normal
+            line-height: normal
+            letter-spacing: normal
+            color: #33333a
+            margin: 0
+    .content 
+        p 
+            font-size: 18px
+            font-weight: normal
+            font-style: normal
+            font-stretch: normal
+            line-height: normal
+            letter-spacing: normal
+            color: #56585b
+            margin-top: 28px
+            text-align: left
+        .buttons 
+            position: absolute
+            bottom: 25px
+            right: 22px
+            button 
+                min-width: 128px
+                height: 31px
+                border-radius: 2px
+                background-color: transparent 
+                border: none 
+                cursor: pointer 
+                outline: none
+                text-transform: uppercase 
+                line-height: 31px
+                padding: 0 5px
+                font-size: 12px
+                font-weight: 600
+                font-style: normal
+                font-stretch: normal
+                letter-spacing: 2px
+                text-align: center
+                transition: .2s ease all
+                vertical-align: initial 
+                margin: 0
+                &:disabled 
+                    border: none !important
+                    color: #fff !important
+                    background-color: #edeff4 !important
+                    cursor: auto
+                &.cancel
+                    margin-right: 22px
+                    border: solid 1px #267db5
+                    color: #267db5
+                &.accept 
+                    background-color: #43b05c
+                    color: #fff
+                &.decline 
+                    background-color: #d0021b
+                    color: #fff
+                &.archive 
+                    background-color: #267db5
+                    color: #fff
+
+#confirm-accept 
+    .circle 
+        background-color: #43b05c
+#confirm-decline
+    .circle
+        background-color: #d0021b
+#confirm-archive 
+    .circle 
+        background-color: #267db5
+        background-image: url(../../../../../assets/images/archive-white.svg)
+        background-repeat: no-repeat
+        background-position: center center
+        background-size: 24px 18.3px
+#rating_bar
+    width: 100%
+    //height: 50px
+    margin-top: 10px
+
+#rating_bar > span:before
+    content: url("../../../../../assets/images/star-raiting.svg")
+    color: #c7c5c5
+    cursor: pointer
+    //font-size: 3em
+    margin-right: 4px
+
+#rating_bar:hover > span:before
+    content: url("../../../../../assets/images/star-raiting-hover.svg")
+
+#rating_bar > span:hover ~ span:before
+    content: url("../../../../../assets/images/star-raiting.svg")
+
+.user-rating 
+    display: block
+    width: 44px
+    margin-top: 10px
+    height: 20px
+    border-radius: 11.5px
+    background-color: #33333a
+    line-height: 20px 
+    font-size: 12px
+    font-weight: normal
+    font-style: normal
+    font-stretch: normal
+    letter-spacing: normal
+    color: #ffffff
+    text-align: center
+    i 
+        font-size: 10px
+        position: relative
+        display: inline-block
+        top: -1px

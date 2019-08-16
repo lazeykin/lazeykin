@@ -1,0 +1,327 @@
+@import "~app/sass_inc/all"
+
+.hidden
+  display: none
+
+.pagination_holder
+  text-align: right
+  padding: 20px
+
+.panel-filters
+  padding: 12px 22px
+  background-color: $white
+  display: flex
+  text-align: right
+  margin-bottom: 10px
+  position: relative
+  border: solid 1px #e1e4e8
+  padding-left: 42px
+
+.search
+  width: 300px
+
+  input
+    font-size: 12px
+    height: 30px
+
+  button
+    background: #b8bfd3
+    color: white
+    border-radius: 0 2px 2px 0
+    border: 0
+    font-size: 12px
+    height: 30px
+    padding: 5px 10px
+    width: 42px
+    &:hover 
+      cursor: pointer
+    i
+      font-size: 1.6em
+
+.search-clear
+  height: 12px
+  font-size: 12px
+  line-height: 30px
+  display: inline-block
+  margin-left: 22px
+  text-transform: uppercase
+  text-decoration: underline !important
+  cursor: pointer
+  letter-spacing: 2px
+  font-weight: 500
+  &:hover 
+    text-decoration: none !important
+
+table
+  background: $white
+  border-radius: 2px
+  box-shadow: 0 0 6px 0 rgba(184, 191, 211, 0.5)
+  width: 100%
+  padding: 6px
+
+  tr
+    height: 76px
+    border-bottom: 1px solid $bg-gray
+
+    td
+      vertical-align: middle
+      height: 76px
+      text-align: left
+      padding: 6px
+
+      &:first-child
+        padding-left: 12px
+        width: 24px
+        max-width: 24px
+
+      &:last-child
+        text-align: right
+        padding-right: 30px
+
+
+      &.avatar
+        width: 52px
+        margin-right: 13px
+        > div
+          margin-left: 14px
+          width: 52px
+          height: 52px
+          justify-content: center 
+          align-content: center 
+          display: flex 
+          overflow: hidden 
+          border-radius: 100%
+
+          img
+            min-width: 100%
+            height: 100%
+            object-fit: cover
+
+      &.info
+        color: black
+        width: 200px
+        line-height: 1em
+
+        .name
+          font-size: 18px
+          font-weight: 600
+          color: #33333a
+
+        .company
+          font-size: 14px
+          text-decoration: underline
+          color: #33333a
+
+      &.control-buttons
+        > div
+          display: flex 
+          justify-content: space-between
+          align-items: center
+        a
+          text-decoration: none
+          color: #4099d5
+          text-transform: uppercase
+          font-size: 12px
+          display: inline-block
+          padding: 0 14px
+          cursor: pointer
+
+.placeholder-text
+  padding: 20px
+  text-align: center
+  color: $text-gray
+
+.group_description
+  width: 426px
+  margin-bottom: 41px
+.groupForm
+  width: 100%
+
+.group_action
+  position: absolute
+  width: 100%
+  max-width: 1036px
+  background-color: #fff
+  bottom: 0
+  padding: 15px
+  display: flex
+  justify-content: right
+  border-radius: 2px
+  box-shadow: 0 -2px 4px 0 rgba(184, 191, 211, 0.5)
+  padding: 20px 42px 20px 22px
+  .add-to-group 
+    border: none
+    outline: none
+    font-size: 12px 
+    font-weight: 600 
+    font-style: normal 
+    font-stretch: normal 
+    line-height: normal 
+    letter-spacing: normal 
+    width: 150px 
+    height: 40px 
+    border-radius: 2px 
+    background-color: #43b05c 
+    line-height: 40px 
+    color: #ffffff 
+    text-transform: uppercase
+    transition: .2s ease all
+    &:hover
+      cursor: pointer
+    &:disabled 
+      background-color: #edeff4
+
+.table_wrapper
+  margin-bottom: 70px
+  width: 100%
+  border: solid 1px #e1e4e8
+
+.items_number
+  font-size: 18px
+  color: #515356
+  font-weight: 600
+  display: flex
+  justify-content: space-between
+  width: 386px
+  max-width: 386px
+  line-height: 40px
+  letter-spacing: 1.8px
+
+.save_button
+  width: 235px
+  height: 40px
+  background-color: #4099d5
+  border: none
+  color: #FFFFFF
+  text-transform: uppercase
+  font-size: 12px
+  margin-left: auto
+  border-radius: 2px
+  transition: .2s ease all 
+  font-weight: 600
+  font-style: normal
+  font-stretch: normal
+  line-height: 1.67
+  letter-spacing: 2px
+  text-align: center
+  &:hover 
+    background-color: #277db6
+    cursor: pointer
+.control-btn 
+  background-color: transparent
+  border: none
+  font-size: 12px  
+  font-weight: 600  
+  font-style: normal  
+  font-stretch: normal  
+  line-height: normal  
+  letter-spacing: normal  
+  color: #4099d5  
+  text-transform: uppercase
+  width: 120px
+  height: 20px
+  background-repeat: no-repeat
+  background-position: 0 50%
+  text-align: left
+  padding-left: 30px
+  padding-right: 0
+  margin-right: 5px
+  &:hover 
+    cursor: pointer
+  &:focus 
+    border: none 
+    outline: none
+  &:disabled 
+    color: #eef0f5
+  &.groups 
+    background-image: url('../../../../../assets/images/group-8.svg')
+    &:disabled 
+      background-image: url('../../../../../assets/images/group-8-disabled.svg')
+  &.orders 
+    background-image: url('../../../../../assets/images/group1.svg')
+    &:disabled 
+      background-image: url('../../../../../assets/images/group1-disabled.svg')
+  &.dialogs 
+    background-image: url('../../../../../assets/images/126519.svg')
+    &:disabled 
+      background-image: url('../../../../../assets/images/126519-disabled.svg')
+  &.remove 
+    background-image: url('../../../../../assets/images/group-copy1.svg')
+  &.add-to-group 
+    padding-left: 0 
+    color: #43b05c
+    &:disabled 
+      color: #eef0f5 !important
+
+
+.custom-control.fill-checkbox .fill-control-input:checked ~ .fill-control-indicator
+  background-color: #4099d5
+  border-color: #4099d5
+
+.custom-control 
+  &.fill-checkbox 
+    --color: #b8bfd3
+    .fill-control-indicator 
+      border: 1px solid #b8bfd3
+      border-radius: 2px
+
+.groups-wrapper 
+  max-width: 874px
+
+.button-wrapper
+  position: absolute
+  right: 23px
+
+.add-contact
+  height: 30px
+  padding: 0
+  width: 135px
+  line-height: 30px
+  background-color: #43b05c
+  color: #fff
+  text-transform: uppercase
+  font-size: 12px
+  border: none
+  font-weight: 600
+  font-style: normal
+  font-stretch: normal
+  line-height: normal
+  letter-spacing: normal
+  &:hover 
+    cursor: pointer
+
+.contact-filters 
+  width: 100%
+  margin-bottom: 7px 
+  button 
+    background-color: transparent 
+    border: none 
+    outline: none 
+    font-size: 12px 
+    font-weight: 600 
+    font-style: normal 
+    font-stretch: normal 
+    line-height: normal 
+    letter-spacing: 1.5px 
+    color: #33333a 
+    text-transform: uppercase
+    transition: .2s all ease
+    margin-right: 19px
+    &.active 
+      color: #4099d5
+      text-decoration: underline 
+      &:hover 
+        text-decoration: none
+    &:hover 
+      cursor: pointer
+      text-decoration: underline
+
+
+.pagination-wrapper 
+  width: 100%
+  position: relative 
+  height: 130px
+  app-pagination
+    position: absolute
+    right: 0
+    top: 0

@@ -1,0 +1,90 @@
+<main role="main"
+      class="main pb-5">
+    <div class="container">
+        <div class="row">
+            <div *ngIf="errorMessage" class="alert_danger">
+                {{errorMessage}}
+            </div>
+            <div class="col">
+                <div class="titleTypo">
+                    {{'TITLE_BRANDS' | translate}}
+                </div>
+                <div class="brands-wrapper">
+                    <div *ngIf="brands.length > 0">
+                        <div class="row editRow">
+                            <div class="col-8 editTitleCol">
+                            </div>
+                            <div class="col-2">
+                            </div>
+                            <div class="col-2">
+                            </div>
+                        </div>
+                        <div class="row editRowValue" *ngFor="let brand of brands">
+                            <div class="col-8 editColValue">
+                                {{brand.name}}
+                            </div>
+                            <div class="col-2 editLink pr-0 edit">
+                                <a href="javascript:void(0);" (click)="editBrand(brand.id)">
+                                    <img src="assets/images/editIconSimple.svg"> {{'BTN_EDIT' | translate}}
+                                </a>
+                            </div>
+                            <div class="col-2 editLink pr-0 delete">
+                                <a *ngIf="brands.length > 1" href="javascript:void(0);" (click)="deleteBrand(brand.id)">
+                                    <img src="assets/images/deleteIconSimple.png"> {{'BTN_DELETE' |translate}}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!hideButton" class="addBrand">
+                    <a href="javascript:void(0);" (click)="addBrand()">
+                        + {{'BTN_ADD' | translate}}
+                    </a>
+                </div>
+                <div *ngIf="displayForm"
+                     class="brandForm">
+                    <form name="form"
+                          class="form companyForm"
+                          (ngSubmit)="saveBrandNew()"
+                          [formGroup]="form_group"
+                          validate>
+                        <div class="row">
+                            <div class="brand-form">
+
+                                    <div class="form-group">
+
+                                        <app-input-text label="{{'LABEL_BRAND_NAME' | translate}}" placeholder="{{'LABEL_BRAND_NAME' | translate}}"
+                                        formControlName="name">
+                                        </app-input-text>
+                                    </div>
+                                    <div class="form-group">
+                                        <app-input-textarea label="{{'LABEL_DESCRIPTION' | translate}}" placeholder="{{'LABEL_DESCRIPTION' | translate}}"
+                                        formControlName="sub_title" [styles]="brandsStyle">
+
+                                        </app-input-textarea>
+                                    </div>
+                                <div class="form-group">
+                                    <app-input-text label="{{'LABEL_WEBPAGE' | translate}}" placeholder="http://example.com"
+                                                    formControlName="website_address"
+                                    >
+
+                                    </app-input-text>
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                                class="btn btn-lg btn-primary btn-block login"
+                                type="submit">
+                            {{'BTN_SAVE' | translate}}
+                        </button>
+                    </form>
+                </div>
+                <!-- <div class="pt-2 pb-2 w-100">
+                    <div class="w-50">
+                        <alert></alert>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</main>

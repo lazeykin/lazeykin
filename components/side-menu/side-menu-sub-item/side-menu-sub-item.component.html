@@ -1,0 +1,6 @@
+<li>
+    <span *ngIf="routerLink === 'products' && productMessagesCount">{{productMessagesCount}}</span>
+    <span *ngIf="routerLink === 'orders' && orderMessagesCount">{{orderMessagesCount}}</span>
+    <span *ngIf="routerLink === 'all' && totalMessagesCount">{{totalMessagesCount}}</span>
+    <a [routerLink]="routerLink" routerLinkActive="active">{{title}}</a>
+</li>

@@ -1,0 +1,1983 @@
+@import "~app/sass_inc/all"
+
+//*
+//    box-shadow: 0 0 1px 1px red inset
+
+
+.dialog, .detail
+    display: flex
+    flex-direction: column
+    height: 100%
+    position: relative
+    background: $white
+    box-shadow: 0 2px 4px 0 rgba(184, 191, 211, 0.5)
+    border-radius: 2px
+    margin-right: 15px
+    max-width: 682px
+    max-height: 587px
+    width: 100%
+.dialog-order, .detail
+    max-width: 874px
+    background: transparent
+    box-shadow: none
+    max-height: calc(100% - 30px)
+    position: relative
+
+.detail 
+    min-height: auto !important
+    height: calc(100% - 30px)
+    max-height: none !important
+    background-color: transparent !important
+    box-shadow: none !important
+    .table-wrapper 
+        max-height: 768px !important
+        overflow: hidden 
+        width: 100%
+        overflow-y: auto 
+        &::-webkit-scrollbar
+            width: 9px
+        &::-webkit-scrollbar-track
+            background-color: rgba(237, 239, 244, 0.48)
+            border-radius: 6px 
+        &::-webkit-scrollbar-thumb 
+            background-color: rgba(184, 191, 211, 0.48)
+            border-radius: 6px
+    table 
+        width: 100%
+        background-color: #fff
+        td 
+            padding: 20px 
+            vertical-align: middle 
+            border: none 
+            font-size: 14px 
+            line-height: normal 
+            font-weight: 600 
+.dialog-product
+    max-width: 682px
+    max-height: 587px
+    width: 100%
+
+.top-holder .product
+    height: 80px
+    padding: 10px
+    width: 100%
+    display: flex
+    flex-direction: row
+    background-color: #fff
+
+.top-holder
+    position: relative
+    width: 100%
+    display: flex
+    flex-direction: row
+    align-items: center
+    border-bottom: 1px solid $bg-gray
+    position: absolute
+.order 
+    background: #fff
+    &.opened 
+        //min-height: 140px
+        max-height: 515px
+        box-shadow: 0 2px 4px 0 rgba(184, 191, 211, 0.5)
+        overflow: hidden
+        overflow-y: auto
+        //z-index: 5
+        &::-webkit-scrollbar
+            width: 9px
+        &::-webkit-scrollbar-track
+            background-color: rgba(237, 239, 244, 0.48)
+            border-radius: 6px 
+        &::-webkit-scrollbar-thumb 
+            background-color: rgba(184, 191, 211, 0.48)
+            border-radius: 6px
+        table 
+            tr:not(:last-child)
+                border-bottom: 1px solid rgba(184, 191, 211, 0.2)
+            td 
+                &:first-child 
+                    width: 88px
+                    padding-right: 0
+                .image 
+                    width: 88px
+                    height: 88px
+                    border-radius: 2px
+                    box-shadow: 0 2px 4px 0 rgba(184, 191, 211, 0.5)
+                    overflow: hidden 
+                    justify-content: center 
+                    align-content: center
+                    display: flex
+                    // margin-left: 30px
+                    margin-left: 10px
+                    img 
+                        width: 100% 
+                        height: auto 
+                        object-fit: contain
+                &.product-name 
+                    max-width: 150px
+                    white-space: nowrap
+                    overflow: hidden
+                    text-overflow: ellipsis
+                    span 
+                        display: block 
+                        text-align: left
+                        &.ref 
+                            font-size: 12px 
+                            font-weight: 300 
+                            font-style: normal 
+                            font-stretch: normal 
+                            line-height: normal 
+                            letter-spacing: normal 
+                            color: #33333a 
+                    .title 
+                        text-align: left
+                        font-size: 18px 
+                        font-weight: 600 
+                        font-style: normal 
+                        font-stretch: normal 
+                        line-height: 1.67 
+                        letter-spacing: normal 
+                        color: #33333a 
+                        text-decoration: underline
+                        cursor: pointer
+                        &:hover 
+                            text-decoration: none
+                &.sizes 
+                    font-size: 16px 
+                    font-weight: 600 
+                    font-style: normal 
+                    font-stretch: normal 
+                    line-height: normal 
+                    letter-spacing: normal 
+                    text-align: justify 
+                    color: #33333a 
+                    text-decoration: underline
+                    position: relative
+                    span:not(.prepack) 
+                        display: block
+                        text-align: center
+                        &:first-child 
+                            margin-bottom: 5px
+                    .sizes_prev_value
+                        position: absolute
+                        width: auto
+                        height: auto
+                        min-width: 110px
+                        background-color: rgba(51, 51, 58, 0.9)
+                        color: #fff
+                        text-decoration: none
+                        z-index: 500
+                        display: flex
+                        padding: 15px
+                        bottom: 4px
+                        left: 33px
+                        cursor: pointer
+                        &::before
+                          content: ''
+                          display: block
+                          position: absolute
+                          top: -12px
+                          left: 45%
+                          width: 0
+                          height: 0
+                          border-style: solid
+                          border-width: 0 6px 12px 6px
+                          border-color: transparent transparent rgba(51, 51, 58, 0.9) transparent
+
+
+                &.price
+                    font-size: 16px 
+                    font-weight: 600 
+                    font-style: normal 
+                    font-stretch: normal 
+                    line-height: 1.88 
+                    letter-spacing: normal 
+                    text-align: left
+                    color: #33333a 
+                    position: relative
+                &.total 
+                    font-size: 18px 
+                    font-weight: 600 
+                    font-style: normal 
+                    font-stretch: normal 
+                    line-height: 1.67 
+                    letter-spacing: normal 
+                    text-align: left
+                    color: #33333a 
+                    .old-price 
+                        position: relative
+                        display: block
+                        font-size: 12px 
+                        font-weight: normal 
+                        font-style: normal 
+                        font-stretch: normal 
+                        line-height: normal 
+                        letter-spacing: normal 
+                        text-decoration: line-through 
+                &:last-child
+                    .control-buttons
+                        display: flex 
+                        flex-direction: column 
+                        width: 115px
+                        min-width: 115px
+                        button 
+                            background: none 
+                            outline: none 
+                            border: none 
+                            padding-left: 20px
+                            background-repeat: no-repeat 
+                            background-position: 0 50%
+                            max-height: 17px
+                            text-transform: uppercase
+                            font-size: 12px 
+                            font-weight: 600 
+                            font-style: normal 
+                            font-stretch: normal 
+                            line-height: 17px
+                            letter-spacing: 2px 
+                            text-align: justify 
+                            color: #4099d5 
+                            cursor: pointer
+                            &.edit 
+                                background-image: url(../../../../../assets/images/edit-icon-active.svg)
+                                background-size: 14px 14px
+                                margin-bottom: 20px
+                                &:disabled 
+                                    background-image: url(../../../../../assets/images/edit.svg)
+                                    color: #edeff4
+                                    cursor: auto
+                            &.delete 
+                                background-image: url(../../../../../assets/images/rubbish-bin.svg)
+                                background-size: 15.4px 12.2px
+                                &:disabled 
+                                    background-image: url(../../../../../assets/images/rubbish-bin-dis.svg)
+                                    cursor: auto 
+                                    color: #edeff4
+.price-wrapper 
+    width: 137px
+    margin-top: 10px
+    // margin-left: 8.5px
+    height: 30px 
+    border-radius: 2px 
+    border: solid 1px #c1c7d9 
+    text-align: center 
+    position: relative
+    font-size: 16px
+    line-height: 30px
+    .old-price 
+        position: absolute 
+        right: 0
+        bottom: -20px
+        font-size: 12px 
+        font-weight: normal 
+        font-style: normal 
+        font-stretch: normal 
+        line-height: normal 
+        letter-spacing: normal 
+        text-align: center 
+        text-decoration: line-through 
+.order-accepted, .order-declined
+    text-transform: uppercase
+    font-size: 16px 
+    font-weight: 600 
+    font-style: normal 
+    font-stretch: normal 
+    line-height: normal 
+    letter-spacing: 2.7px 
+.order-accepted 
+    color: #43b05c
+.order-declined 
+    color: #d0021b
+tr 
+    padding: 10px
+.show-all 
+    //padding: 0 10px
+    position: absolute 
+    bottom: -15px
+    left: 0
+    right: 0
+    margin-left: auto
+    margin-right: auto
+    min-width: 127px
+    max-width: 162px
+    width: 100%
+    height: 30px
+    border-radius: 2px
+    border: none
+    background-color: #4099d5
+    text-transform: uppercase
+    color: #fff 
+    font-size: 12px
+    font-weight: 600
+    line-height: 30px
+    letter-spacing: 1px
+    outline: none 
+    cursor: pointer
+    transition: .2s ease all
+    z-index: 50
+    i 
+        margin-top: -4px
+.arrow-left
+    font-size: 36px
+    color: $black
+    margin-top: 10px
+
+.avatar
+    display: inline-block
+    width: 60px
+    height: 60px
+    border-radius: 100% 
+    overflow: hidden 
+    display: flex 
+    justify-content: center 
+    align-content: center
+    //float: left
+    margin: 0 10px
+
+    img
+        height: 100%
+        width: auto
+        object-fit: contain
+.info
+    display: flex 
+    flex-direction: column
+    justify-content: center
+    color: #33333a
+    width: 70%
+    .name
+        color: $black
+        display: inline-block
+        font-weight: 600
+        font-size: 18px
+        vertical-align: middle
+    .company
+        font-size: 14px
+        font-weight: normal
+        color: $black
+        text-decoration: underline
+
+.messages-history-wrapper
+    /* https://stackoverflow.com/a/14964944/5558123 */
+    flex: 1
+    overflow-y: auto
+    background-color: #fff
+    max-height: 520px
+    padding-top: 140px
+    &::-webkit-scrollbar
+        width: 9px
+    &::-webkit-scrollbar-track
+        background-color: rgba(237, 239, 244, 0.48)
+        border-radius: 6px 
+    &::-webkit-scrollbar-thumb 
+        background-color: rgba(184, 191, 211, 0.48)
+        border-radius: 6px
+    min-height: 100px
+    height: 100px
+    &.order 
+        max-height: 516px
+    &.product
+        padding-top: 75px
+
+
+.messages-history
+    padding: 10px
+
+    .income-message, .outcome-message, .system-message
+        width: 100%
+        padding: 10px
+
+    .income-message
+        text-align: left
+        .message-content
+            background-color: $white
+            border-radius: 15px 15px 15px 0
+
+    .outcome-message
+        text-align: right
+        .message-content
+            background-color: $bg-gray
+            border-radius: 15px 15px 0 15px
+            box-shadow: none
+
+    .message-content
+        white-space: pre-line
+        display: inline-block
+        text-align: left
+        padding: 10px 20px
+        border-radius: 15px 15px 15px 3px
+        box-shadow: 0 0 4px 0 rgba(184, 191, 211, 0.5)
+        max-width: 75%
+        min-width: 250px
+        //https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/
+        overflow-wrap: break-word
+        word-wrap: break-word
+        word-break: break-word
+        hyphens: auto
+
+        .datetime
+            width: 100%
+            display: block
+            text-align: right
+
+            .date, .time
+                display: inline-block
+                font-size: 12px
+                line-height: 1em
+                color: $text-gray
+
+    .system-message
+        text-align: center
+        .message-content
+            display: inline-block
+            padding: 10px
+            border-radius: 20px
+            background: #eeeeee
+            color: gray
+            text-align: center
+
+    .system-info-message
+        text-align: center
+        .message-content
+            box-shadow: unset
+            color: gray
+            font-size: 12px
+
+
+.new-message-input
+    width: 100%
+    background-color: #fff
+
+    .input-container
+        display: flex
+        flex-direction: row
+        border-top: 2px solid #b8bfd3
+
+        button.send
+            padding: 5px 15px
+            font-size: 18px
+            font-weight: 600
+            font-style: normal
+            font-stretch: normal
+            line-height: normal
+            letter-spacing: 1.8px
+            color: #4099d5
+            background-color: #fff
+            min-width: 128px
+            border: none
+            cursor: pointer
+            text-transform: uppercase
+            &[disabled]
+                cursor: unset
+
+            .form_spinner
+                width: 30px
+                height: 30px
+
+            &:focus
+                outline: none
+
+        textarea
+            flex: 1
+            padding: 13px 0
+            min-height: 50px
+            resize: none
+            border: none
+            overflow-y: auto !important
+            max-height: 170px
+            &:disabled
+                background-color: white
+            &:focus
+                outline: none
+            &::-webkit-scrollbar
+                width: 9px
+            &::-webkit-scrollbar-track
+                background-color: rgba(237, 239, 244, 0.48)
+                border-radius: 6px 
+            &::-webkit-scrollbar-thumb 
+                background-color: rgba(184, 191, 211, 0.48)
+                border-radius: 6px
+
+    .file-upload
+        padding: 5px
+        height: 24px
+        width: 24px
+        border-radius: 100px
+        position: relative
+        display: flex
+        justify-content: center
+        align-items: center
+        align-self: flex-end
+        border: 2px solid $dustBlue
+        overflow: hidden
+        background-color: #fff
+        transition: all 1s
+        color: $dustBlue
+        font-size: 24px
+        z-index: 0
+        margin: auto 27px auto 16px
+
+        &:hover
+            cursor: pointer
+        img
+            width: 70%
+            height: auto
+            cursor: pointer
+
+        input[type='file']
+            height: 30px
+            width: 30px
+            position: absolute
+            top: 0
+            left: 0
+            opacity: 0
+            cursor: pointer
+.wrapper 
+    height: 100% 
+    min-height: calc(100vh - 134px)
+    display: flex 
+    flex-direction: row 
+    justify-content: space-between
+
+.order-buttons 
+    height: 80px 
+    border-radius: 2px 
+    box-shadow: 0 -2px 4px 0 rgba(184, 191, 211, 0.5) 
+    background-color: #fff
+    max-width: 874px
+    width: 100%
+    position: absolute
+    bottom: 0
+    display: flex 
+    flex-direction: row 
+    justify-content: space-between
+    align-items: center
+    padding: 0 42px 0 18px
+    span 
+        display: block
+        font-size: 18px
+        font-weight: 600
+        font-style: normal
+        font-stretch: normal
+        line-height: normal
+        letter-spacing: 1.8px
+        color: #33333a
+    .control-buttons 
+        button 
+            background: none 
+            outline: none 
+            border: none
+            min-width: 139px
+            height: 30px
+            border-radius: 2px
+            text-transform: uppercase
+            line-height: 30px
+            margin-right: 14px
+            text-align: center
+            font-size: 12px
+            font-weight: 600
+            font-style: normal
+            font-stretch: normal
+            letter-spacing: 2px
+            cursor: pointer
+            transition: .2s ease all
+            &:last-child 
+                margin-right: 0
+            &.decline
+                border: solid 1px #c8102e
+                color: #c8102e
+            &.accept 
+                background-color: #43b05c
+                color: #fff 
+            &.send
+                background-color: #4099d5
+                color: #fff
+            &:disabled 
+                border: none 
+                color: #fff 
+                background-color: #edeff4
+                cursor: auto
+
+.order-badge 
+    width: 170px 
+    max-height: 586px 
+    border-radius: 3px 
+    background-color: #ffffff 
+    padding: 12px 0 10px 0
+    flex: auto
+    align-self: baseline
+    .customerRef
+        width: 100px !important
+    > div 
+        max-height: 525px 
+        overflow: hidden
+        overflow-y: auto
+        &::-webkit-scrollbar
+            width: 4px 
+        &::-webkit-scrollbar-track
+            background-color: rgba(237, 239, 244, 0.48)
+            border-radius: 3px
+        &::-webkit-scrollbar-thumb
+            background-color: rgba(184, 191, 211, 0.48)
+            border-radius: 3px
+    .view 
+        padding-top: 5px
+        background: none 
+        outline: none 
+        border: none
+        cursor: pointer
+        height: 15px 
+        font-size: 12px 
+        font-weight: 600 
+        font-style: normal 
+        font-stretch: normal 
+        line-height: 15px
+        letter-spacing: 2px 
+        text-align: justify 
+        color: #4099d5 
+        text-transform: uppercase
+        margin: 0 auto
+        display: block
+        i 
+            font-size: 14px
+    h2 
+        font-size: 18px 
+        padding-left: 10px
+        font-weight: 600 
+        font-style: normal 
+        font-stretch: normal 
+        line-height: normal 
+        letter-spacing: normal 
+        color: #33333a 
+        margin-bottom: 0
+    tr:not(:last-child)
+        border-bottom: 1px solid #edeff4
+    td
+        padding: 14px 0
+        .image 
+            margin-left: 10px
+            width: 48px
+            height: 48px
+            border-radius: 2px
+            box-shadow: 0 2px 4px 0 rgba(184, 191, 211, 0.5)
+            overflow: hidden 
+            justify-content: center 
+            align-content: center
+            display: flex
+            margin-right: 6px
+            img 
+                width: 100% 
+                height: auto 
+                object-fit: contain
+        &.product-name 
+            vertical-align: baseline
+            padding-right: 10px
+            span 
+                display: block 
+                text-align: left
+                &.ref 
+                    font-size: 12px 
+                    font-weight: 300 
+                    font-style: normal 
+                    font-stretch: normal 
+                    line-height: normal 
+                    letter-spacing: normal 
+                    color: #33333a 
+            .title 
+                text-align: left
+                font-size: 12px 
+                font-weight: 600 
+                font-style: normal 
+                font-stretch: normal 
+                line-height: normal
+                letter-spacing: normal 
+                color: #33333a 
+                text-decoration: underline
+                cursor: pointer
+                margin-top: 2px
+                display: block
+                overflow: hidden 
+                text-overflow: ellipsis
+                white-space: nowrap
+                width: 100px
+                &:hover 
+                    text-decoration: none
+
+.product-badge
+    max-width: 362px
+    width: 100%
+    max-height: 160px
+    height: 100%
+    background-color: $white
+    padding: 12px 15px
+    border-radius: 2px
+    .customerRef
+        width: 100px !important
+
+    h3
+        flex: 3
+        font-size: 18px
+        font-weight: 600
+        color: $black
+        margin-bottom: 12px
+        text-transform: capitalize
+
+    .row
+        margin: 0
+
+    .product-image
+        width: 91px
+        height: 91px
+        overflow: hidden
+        border: 2px solid $gray
+        margin-right: 10px
+        display: flex
+        align-content: center
+        justify-content: center
+
+        img
+            height: 100%
+            width: 100%
+            object-fit: contain
+
+    .product-info
+        display: inline-block
+        max-width: 180px
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
+
+        .ref
+            font-size: 12px
+            font-weight: 300
+            color: $darkGray
+            line-height: 1
+
+        .name
+            font-size: 18px
+            font-weight: 600
+            line-height: 1.67
+
+        .price
+            padding-top: 5px
+            color: $mint
+            text-transform: uppercase
+            font-size: 18px
+            font-weight: bold
+            font-style: normal
+            font-stretch: normal
+            line-height: 1.67
+    .show
+        float: right
+        text-transform: uppercase
+        text-decoration: underline
+        color: $dustBlue
+        font-size: 12px
+        font-weight: 600
+        font-style: normal
+        font-stretch: normal
+        line-height: 1.67
+        letter-spacing: 2px
+
+
+//order
+.top-holder .order
+    padding: 0
+    width: 100%
+
+    table
+        width: 100%
+
+    tr
+        padding: 10px
+
+    &.open:not(.opened)
+        tr
+            box-shadow: inset 8px 0 0 #f5a623
+
+    &.declined:not(.opened)
+        tr
+            box-shadow: inset 8px 0 0 #d0021b
+
+    &.approved:not(.opened)
+        tr
+            box-shadow: inset 8px 0 0 #43b05c
+
+    td
+        padding: 20px
+        vertical-align: middle
+        border: none
+        font-size: 14px
+        line-height: normal
+        font-weight: 600
+
+    .order-contact
+        padding-left: 40px
+        max-width: 150px
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+
+        span, a
+            font-size: 12px
+            font-weight: 300
+            color: #33333a
+            letter-spacing: 1.2px
+        a 
+            //cursor: pointer
+
+    .order-sizes
+        text-decoration: underline
+
+    .order-cost
+        text-transform: uppercase
+        font-size: 16px
+
+        span
+            text-decoration: line-through
+            font-size: 12px
+
+    .order-control
+        width: 130px
+        display: flex
+        justify-items: center
+        flex-direction: column
+        align-content: space-between
+        button
+            background: none
+            width: 130px
+            height: 27px
+            text-transform: uppercase
+            font-size: 12px
+            letter-spacing: 2px
+            text-align: justify
+            border: none
+            cursor: pointer
+            margin-bottom: 5px
+            outline: none
+
+            &:disabled
+                opacity: 0.3
+
+            img
+                margin-right: 10px
+
+            &.accept
+                color: #43b05c
+
+            &.decline
+                color: #d0021b
+
+            &.edit
+                color: #4099d5
+                margin-bottom: unset
+                img
+                    position: relative
+                    // margin-left: -4px
+                    margin-right: 6px
+
+@media screen and (max-width: 920px)
+    .wrapper 
+        flex-wrap: wrap
+    .product-badge 
+        max-width: 100%
+    .dialog
+        margin-right: 0
+
+
+#custom-modal-10 .modal-body  
+    border-radius: 2px 
+    padding: 0 
+    min-height: 293px 
+    width: 473px 
+ 
+
+#custom-modal-10 .modal-body .content  
+    padding: 24px 32px 46px 32px
+    table
+        width: 100%
+    .modal_button_container
+        .cancel
+            width: 129px
+            height: 28px
+            border-radius: 2px
+            border: solid 1px #d0021b
+            font-size: 12px
+            font-weight: 600
+            font-style: normal
+            font-stretch: normal
+            line-height: 1.67
+            letter-spacing: 2px
+            text-align: center
+            color: #d0021b
+            background-color: #FFFFFF
+            text-transform: uppercase
+            margin-right: 28px
+
+#custom-modal-10 .modal-body .top  
+    height: 20px
+    position: relative 
+    display: flex
+    flex-direction: row 
+    justify-content: space-between 
+    align-items: center 
+    padding: 0 32px 
+ 
+
+#custom-modal-10 .modal-body .top h2  
+    font-size: 24px 
+    font-weight: 600 
+    font-style: normal 
+    font-stretch: normal 
+    line-height: normal 
+    letter-spacing: 2.4px 
+    color: #515356 
+    margin-bottom: 0 
+    text-align: justify 
+ 
+
+#custom-modal-10 .modal_send_button  
+    width: 129px
+    height: 30px 
+    border-radius: 2px 
+    font-size: 12px 
+    font-weight: 600 
+    font-style: normal 
+    font-stretch: normal 
+    line-height: 30px 
+    letter-spacing: 2px 
+    text-align: center 
+ 
+#custom-modal-10 .size_quantity  
+    font-size: 16px 
+    color: #33333a 
+    margin-top: 0 
+    margin-bottom: 20px 
+ 
+#custom-modal-10 .modal-body .closeModal  
+    position: absolute !important
+    top: 0 !important 
+    right: 14px
+    height: 23px 
+    width: 23px 
+    background-repeat: no-repeat
+    background-size: contain 
+ 
+.show_quantity  
+    display: block 
+    width: 70px 
+    padding: 0 7px 
+    height: 30px 
+    background-color: #737373 
+    color: #fff 
+    position: absolute 
+    bottom: -40px 
+    font-size: 12px 
+    text-align: center 
+    line-height: 30px 
+    border-radius: 5px 
+    box-shadow: 2px 0 4px 0 rgba(0, 0, 0, 0.5) 
+    z-index: 10
+ 
+.show_quantity:before  
+    content: '' 
+    display: block 
+    position: absolute 
+    top: -40% 
+    left: 31% 
+    width: 0 
+    height: 0 
+    border-style: solid 
+    border-width: 0 6px 12px 6px 
+    border-color: transparent transparent #737373 transparent 
+ 
+.show_quantity_container  
+    position: relative 
+    input 
+        position: relative
+        top: 0
+        display: block
+        height: 23px !important
+        &:focus, &:active
+            outline: none
+ 
+.modal_send_button
+    cursor: pointer
+
+.itemButtons .itemLinks button  
+    text-align: left 
+ 
+.itemButtons .itemLinks img  
+    width: 16px 
+    vertical-align: middle 
+ 
+.btn-primary:disabled  
+    background-color: #e9e9e9 
+    border-color: #e9e9e9 
+    opacity: 1 
+ 
+.itemSizes .updateButton  
+    cursor: pointer 
+    display: inline-block 
+    margin-left: 10px 
+ 
+.itemSizes .updateButtonSizes  
+    cursor: pointer 
+    display: inline-block 
+    margin-left: 40px 
+    margin-top: -45px 
+ 
+.itemSizes .cancelUpdateButton  
+    cursor: pointer 
+    display: inline-block 
+    margin-left: 6px 
+    margin-top: 2px 
+    width: 11px 
+ 
+.itemSizes .updateInput  
+    display: inline-block 
+ 
+img.error 
+    width: 50px
+    height: 50px
+#modal-error 
+    .top 
+        display: flex 
+        flex-direction: row
+        margin-top: 30px
+    h2 
+        line-height: 50px
+        margin-left: 30px
+    .content 
+        text-align: left 
+        font-size: 20px
+        padding-top: 20px
+    .closeModal
+        background-image: url(../../../../../assets/images/ic-close.png)
+        opacity: 0.6
+        background-repeat: no-repeat
+        background-position: center center
+        background-size: cover
+        height: 16px
+        width: 16px
+        top: 20px
+        right: 20px
+    .modal-body > button 
+        outline: none
+        cursor: pointer
+        border: none
+        width: 128px 
+        height: 31px 
+        border-radius: 2px 
+        background-color: #267db5 
+        text-transform: uppercase
+        line-height: 31px
+        font-size: 12px 
+        font-weight: 600 
+        font-style: normal 
+        font-stretch: normal 
+        letter-spacing: 2px 
+        text-align: center 
+        color: #ffffff 
+        position: absolute
+        bottom: 25px
+        right: 20px
+
+.itemSizes .updateInput  
+    display: inline-block 
+    //padding: 5px 
+.updateInput.prepack 
+    height: auto !important
+.show_quantity_container input.prepack 
+    height: auto !important
+tr:last-child td  
+    border-bottom: none 
+ 
+.show_quantity  
+    display: block 
+    width: 70px 
+    padding: 0 7px 
+    height: 30px 
+    background-color: #737373 
+    color: #fff 
+    position: absolute 
+    bottom: -48px 
+    font-size: 12px 
+    text-align: center 
+    line-height: 30px 
+    border-radius: 5px 
+    box-shadow: 2px 0 4px 0 rgba(0, 0, 0, 0.5) 
+    z-index: 10 
+ 
+.show_quantity:before  
+    content: '' 
+    display: block 
+    position: absolute 
+    top: -40% 
+    left: 31% 
+    width: 0 
+    height: 0 
+    border-style: solid 
+    border-width: 0 6px 12px 6px 
+    border-color: transparent transparent #737373 transparent 
+ 
+.show_quantity_container  
+    position: relative 
+ 
+
+.sizeNumber  
+    width: 43px 
+    height: 32px 
+    vertical-align: middle 
+    border: solid 1px #eef0f2 
+    background-color: #eef0f2 
+    border-right: none 
+    outline: none
+    text-align: center 
+    font-size: 16px 
+    font-weight: normal 
+    font-style: normal 
+    font-stretch: normal 
+    line-height: 32px 
+    letter-spacing: normal 
+    color: #4099d5 
+    margin: 0 
+ 
+.sizeValue 
+    width: 43px 
+    height: 23px 
+    border: solid 2px #eef0f2 
+    background-color: white 
+    outline: none
+    margin: 0 
+    font-size: 16px 
+    font-weight: normal 
+    font-style: normal 
+    font-stretch: normal 
+    line-height: normal  
+    letter-spacing: normal 
+    color: #45454b 
+    text-align: center 
+ 
+.updateItem, .resetItem
+    background: none 
+    border: none 
+    outline: none 
+    display: inline-block 
+    font-size: 12px 
+    font-weight: 600 
+    font-style: normal 
+    font-stretch: normal 
+    line-height: normal 
+    letter-spacing: 2px 
+    text-align: justify 
+    color: #4099d5 
+    cursor: pointer 
+    text-transform: uppercase 
+    padding-left: 0 !important
+
+.updateItem 
+    margin-bottom: 20px
+ 
+.back 
+    font-size: 12px 
+    font-weight: 600 
+    font-style: normal 
+    font-stretch: normal 
+    line-height: 1.67 
+    letter-spacing: 2px 
+    color: #4099d5 !important
+    text-transform: uppercase
+    text-decoration: none
+    cursor: pointer
+    margin-bottom: 10px
+    display: block
+
+
+ 
+//.disountInput
+//    width: 150px
+//    margin: 0 auto
+ 
+.displayErorDiscount  
+    font-size: 12px 
+    color: red 
+    width: 150px 
+ 
+.disountInput input  
+    border: 1px solid #4099d5 
+    font-size: 16px
+    font-weight: 600 
+    font-style: normal 
+    font-stretch: normal 
+    line-height: normal 
+    letter-spacing: 1.8px 
+    text-align: center 
+    color: #33333a 
+    padding: 5px 
+    //max-width: 59px
+ 
+.disountInput .input-group-btn button.btnPlus  
+    width: 40px 
+    height: 40px 
+    border-radius: 2px 
+    box-sizing: border-box 
+    background-color: #4099d5 
+    border: 1px solid #4099d5 
+    color: #fff 
+    font-size: 20px 
+    line-height: 40px 
+    text-align: center 
+    cursor: pointer 
+    padding: 0 
+    outline: none 
+    background-image: url(../../../../../assets/images/add-white.svg) 
+    background-size: 23px 23px 
+    background-position: center center 
+    background-repeat: no-repeat 
+ 
+.disountInput .input-group-btn button.btnMinus  
+    width: 40px 
+    height: 40px 
+    box-sizing: border-box 
+    border-radius: 2px 
+    border: 1px solid #4099d5 
+    background-color: #fff 
+    color: #4099d5 
+    font-size: 20px 
+    line-height: 40px 
+    text-align: center 
+    cursor: pointer 
+    padding: 0 
+    outline: none 
+    background-image: url(../../../../../assets/images/substract.svg) 
+    background-size: 23px 23px 
+    background-position: center center 
+    background-repeat: no-repeat 
+
+
+.pair_per_pair
+  font-size: 12px
+  font-weight: normal
+  font-style: normal
+  font-stretch: normal
+  line-height: normal
+  letter-spacing: 0.7px
+  color: #33333a
+  margin-bottom: 4px
+  text-align: center
+  margin-left: -25px
+
+.info_pair
+  cursor: pointer
+  position: relative
+
+.info_pair:hover .min_price_container
+  display: block
+
+.show_quantity
+  display: block
+  width: 70px
+  padding: 0 7px
+  height: 30px
+  background-color: #737373
+  color: #fff
+  position: absolute
+  bottom: -45px
+  left: -8px
+  font-size: 12px
+  text-align: center
+  line-height: 30px
+  border-radius: 5px
+  box-shadow: 2px 0 4px 0 rgba(0, 0, 0, 0.5)
+  z-index: 10
+
+.show_quantity:before
+  content: ''
+  display: block
+  position: absolute
+  top: -40%
+  left: 31%
+  width: 0
+  height: 0
+  border-style: solid
+  border-width: 0 6px 12px 6px
+  border-color: transparent transparent #737373 transparent
+
+.min_price_container
+  position: absolute
+  left: -47px
+  top: 26px
+  width: 150px
+  height: 58px
+  display: none
+
+.min_price_container:before
+  top: -19%
+  left: 31%
+
+.bidding_input
+  width: 123px
+  height: 34px
+  border-radius: 2px
+  border: solid 1px #c1c7d9
+  position: relative
+
+.discount_title
+    text-decoration: line-through
+    font-size: 12px
+    font-weight: normal
+    font-style: normal
+    font-stretch: normal
+    line-height: normal
+    letter-spacing: normal
+    text-align: center
+    color: #33333a
+
+.text_right
+  text-align: right
+  margin-top: 4px
+
+.error_min_message
+    color: #d0021b
+    text-align: left
+    font-size: 14px
+
+.add_button
+    position: absolute
+    top: 10px
+    right: 192px
+    width: 138px
+    height: 30px
+    border-radius: 2px
+    background-color: #43b05c
+    font-size: 12px
+    font-weight: 600
+    font-style: normal
+    font-stretch: normal
+    line-height: 1.67
+    letter-spacing: normal
+    text-align: center
+    color: #ffffff
+    border: none
+    text-transform: uppercase
+    cursor: pointer
+
+.customerRef  
+    font-size: 10px 
+    font-weight: 300 
+    font-style: italic 
+    font-stretch: normal 
+    line-height: normal 
+    letter-spacing: normal 
+    color: #33333a 
+    position: relative
+    overflow: hidden 
+    text-overflow: ellipsis 
+    white-space: nowrap 
+    width: 100% 
+
+.sizes_prepack
+    display: block
+    position: relative
+    cursor: pointer
+
+.sizes_prepack_details
+    display: none !important
+    position: absolute
+    top: 29px
+    left: -20%
+    z-index: 100
+
+.sizes_prepack_details__size
+    width: 50px
+    height: 37px
+    text-align: center
+    color: #fff
+    font-size: 12px
+    font-weight: normal
+    font-style: normal
+    font-stretch: normal
+    line-height: 37px
+    letter-spacing: normal
+    border-right: 2px solid #fff
+    border-bottom: 2px solid #fff
+
+.sizes_prepack_details__value
+    width: 50px
+    height: 28px
+    text-align: center
+    color: #fff
+    font-size: 12px
+    font-weight: normal
+    font-style: normal
+    font-stretch: normal
+    line-height: 28px
+    letter-spacing: normal
+    border-right: 2px solid #fff
+    word-break: break-word
+    border-bottom: 2px solid #fff
+
+.sizes_prepack_details__container div:nth-child(6n) .sizes_prepack_details__size,
+.sizes_prepack_details__container div:nth-child(6n) .sizes_prepack_details__value
+    border-right: none
+
+.sizes_prepack_details__container
+    max-width: 300px
+    width: max-content
+    display: flex
+    flex-wrap: wrap
+    border-radius: 6px
+    overflow: hidden
+    background-color: rgba(51, 51, 58, 0.9)
+
+.sizes_prepack_details
+    &::before
+        content: ''
+        display: block
+        position: absolute
+        top: -12px
+        left: 50%
+        width: 0
+        height: 0
+        border-style: solid
+        border-width: 0 6px 12px 6px
+        border-color: transparent transparent rgba(51, 51, 58, 0.9) transparent
+
+
+.sizes_prepack
+    $root: &
+
+    &_details
+        display: none !important
+
+        #{$root}:hover &
+            display: block !important
+
+.price_title
+    font-size: 14px
+    font-weight: 600
+    font-style: normal
+    font-stretch: normal
+    line-height: normal
+    letter-spacing: normal
+    text-align: left
+    color: #33333a
+    & span
+        display: block
+
+.discount
+    color: #eb6774 !important
+
+.padd-top
+    padding-top: 40px !important
+.table_header
+    background-color: #edeff4
+    text-transform: uppercase
+    border: none !important
+    th
+        font-size: 12px !important
+        font-weight: normal !important
+        font-style: normal !important
+        font-stretch: normal !important
+        line-height: normal !important
+        letter-spacing: normal !important
+        color: #b8bfd3 !important
+        padding: 5px 20px !important
+
+.mar-top
+    margin-top: 26px
+.productStatus
+    font-size: 12px
+    font-weight: 600
+    font-style: normal
+    font-stretch: normal
+    line-height: normal
+    letter-spacing: normal
+    text-align: justify
+    color: #b8bfd3
+    text-transform: uppercase
+
+.left_pos
+    //left: -117px
+.changes_wrapper
+  display: flex !important
+.text_was
+  margin-right: 5px
+  font-size: 12px
+  font-weight: 600
+  font-style: normal
+  font-stretch: normal
+  line-height: normal
+  letter-spacing: normal
+  color: #ffffff
+  text-transform: uppercase
+
+.prev_item_value
+  font-size: 12px
+  font-weight: 600
+  font-style: normal
+  font-stretch: normal
+  line-height: normal
+  letter-spacing: normal
+  text-align: justify
+  color: #ffffff
+  text-decoration: underline
+
+#sizes-changes .modal .modal-body
+  text-align: left
+  width: 465px
+  height: auto
+  padding-top: 0
+  .title
+    font-size: 24px
+    font-weight: 600
+    font-style: normal
+    font-stretch: normal
+    line-height: normal
+    letter-spacing: normal
+    color: #33333a
+    margin: 0
+    padding: 0
+  .sizer
+      h3
+        font-size: 18px
+        font-weight: 600
+        font-style: normal
+        font-stretch: normal
+        line-height: normal
+        letter-spacing: normal
+        color: #33333a
+      .quantity_size
+        font-size: 13px
+        font-weight: normal
+        font-style: normal
+        font-stretch: normal
+        line-height: normal
+        letter-spacing: normal
+        color: #33333a
+        margin-bottom: 10px
+      .modal-sizes-container
+        margin-bottom: 28px
+
+.show_order_td
+  height: 200px
+.prepack_name
+  font-size: 15px
+  font-weight: normal
+  font-style: normal
+  font-stretch: normal
+  line-height: normal
+  letter-spacing: 0.5px
+  color: #ffffff
+  padding: 10px
+  border-bottom: 1px solid #fff
+
+.sizes_prev_value_prep
+      position: absolute
+      width: auto
+      height: 71px
+      background-color: rgba(51, 51, 58, 0.9)
+      color: #fff
+      text-decoration: none
+      z-index: 500
+      display: flex
+      bottom: 4px
+      left: 33px
+      cursor: pointer
+      &::before
+          content: ''
+          display: block
+          position: absolute
+          top: -12px
+          left: 45%
+          width: 0
+          height: 0
+          border-style: solid
+          border-width: 0 6px 12px 6px
+          border-color: transparent transparent rgba(51, 51, 58, 0.9) transparent
+
+.padding
+  padding: 10px
+
+.prepack_body
+  margin-top: 53px
+  table
+    width: 100%
+    thead
+      tr
+        th
+          font-size: 12px
+          font-weight: normal
+          font-style: normal
+          font-stretch: normal
+          line-height: normal
+          letter-spacing: normal
+          color: #b8bfd3
+    tbody
+      tr
+        td
+          &:not(first-child)
+            font-size: 14px
+            font-weight: normal
+            font-style: normal
+            font-stretch: normal
+            line-height: 2.14
+            letter-spacing: normal
+            color: #33333a
+.prepack_table_name
+  font-size: 14px !important
+  font-weight: 600 !important
+  font-style: normal !important
+  font-stretch: normal !important
+  line-height: 2.14 !important
+  letter-spacing: normal !important
+  color: #000000 !important
+
+.prepack_changes_title
+  font-size: 18px
+  font-weight: 600
+  font-style: normal
+  font-stretch: normal
+  line-height: normal
+  letter-spacing: normal
+  color: #33333a
+
+.sizes
+  cursor: pointer
+  $root: &
+
+  &_prev_value
+    display: none !important
+
+    #{$root}:hover &
+      display: flex !important
+.price
+  cursor: pointer
+  $root: &
+
+  &_prev_value
+    display: none !important
+
+    #{$root}:hover &
+      display: flex !important
+.sizes
+  cursor: pointer
+  $root: &
+
+  &_prev_value_prep
+    display: none !important
+
+    #{$root}:hover &
+      display: block !important
+.price_prev_value
+  position: absolute
+  width: auto
+  height: 71px
+  background-color: rgba(51, 51, 58, 0.9)
+  color: #fff
+  text-decoration: none
+  z-index: 500
+  display: flex
+  padding: 15px
+  bottom: 4px
+  left: 33px
+  cursor: pointer
+  &::before
+    content: ''
+    display: block
+    position: absolute
+    top: -12px
+    left: 45%
+    width: 0
+    height: 0
+    border-style: solid
+    border-width: 0 6px 12px 6px
+    border-color: transparent transparent rgba(51, 51, 58, 0.9) transparent
+
+
+#confirm-accept, #confirm-decline
+    .circle
+        width: 48px
+        height: 48px 
+        border-radius: 100%
+        color: white 
+        font-size: 40px
+        text-align: center 
+        line-height: 48px
+        margin-right: 18px
+    .closeModal
+        background-image: url(../../../../../assets/images/ic-close.png)
+        opacity: 0.6
+        background-repeat: no-repeat
+        background-position: center center
+        background-size: cover
+        height: 16px
+        width: 16px
+        top: 20px
+        right: 20px
+    .modal-body 
+        padding-top: 62px
+    .top
+        display: flex 
+        flex-direction: row 
+        flex-wrap: wrap 
+        align-items: center
+        h2 
+            font-size: 24px
+            font-weight: 600
+            font-style: normal
+            font-stretch: normal
+            line-height: normal
+            letter-spacing: normal
+            color: #33333a
+            margin: 0
+    .content 
+        p 
+            font-size: 18px
+            font-weight: normal
+            font-style: normal
+            font-stretch: normal
+            line-height: normal
+            letter-spacing: normal
+            color: #56585b
+            margin-top: 28px
+            text-align: left
+        .buttons 
+            position: absolute
+            bottom: 25px
+            right: 22px
+            button 
+                min-width: 128px
+                height: 31px
+                border-radius: 2px
+                background-color: transparent 
+                border: none 
+                cursor: pointer 
+                outline: none
+                text-transform: uppercase 
+                line-height: 31px
+                padding: 0 5px
+                font-size: 12px
+                font-weight: 600
+                font-style: normal
+                font-stretch: normal
+                letter-spacing: 2px
+                text-align: center
+                transition: .2s ease all
+                &:disabled 
+                    border: none !important
+                    color: #fff !important
+                    background-color: #edeff4 !important
+                    cursor: auto
+                &.cancel
+                    margin-right: 22px
+                    border: solid 1px #267db5
+                    color: #267db5
+                &.accept 
+                    background-color: #43b05c
+                    color: #fff
+                &.decline 
+                    background-color: #d0021b
+                    color: #fff
+
+#confirm-accept 
+    .circle 
+        background-color: #43b05c
+#confirm-decline
+    .circle
+        background-color: #d0021b
+
+
+.modal_product_detail
+    display: flex
+    justify-content: space-between
+    width: 100%
+    &_info
+        display: flex
+    .product-name
+        text-align: left
+        span
+            display: block
+            text-align: left
+            &.ref
+                font-size: 12px
+                font-weight: 300
+                font-style: normal
+                font-stretch: normal
+                line-height: normal
+                letter-spacing: normal
+                color: #33333a
+        .title
+            text-align: left
+            font-size: 18px
+            font-weight: 600
+            font-style: normal
+            font-stretch: normal
+            line-height: 1.67
+            letter-spacing: normal
+            color: #33333a
+            text-decoration: underline
+            cursor: pointer
+            &:hover
+                text-decoration: none
+.image
+    width: 88px
+    height: 88px
+    border-radius: 2px
+    box-shadow: 0 2px 4px 0 rgba(184, 191, 211, 0.5)
+    overflow: hidden
+    justify-content: center
+    align-content: center
+    display: flex
+    margin-right: 8px
+    img
+        width: 100%
+        height: auto
+        object-fit: contain
+.modal_table_header
+    th
+        font-size: 12px
+        font-weight: normal
+        font-style: normal
+        font-stretch: normal
+        line-height: normal
+        letter-spacing: normal
+        color: #b8bfd3
+        text-align: center
+.modal_table_body
+    td
+        font-size: 14px
+        font-weight: normal
+        font-style: normal
+        font-stretch: normal
+        line-height: 2.14
+        letter-spacing: normal
+        color: #33333a
+        .show_quantity_container
+            input
+                width: 106px
+        &:first-child
+            font-size: 14px
+            font-weight: 600
+            font-style: normal
+            font-stretch: normal
+            line-height: 2.14
+            letter-spacing: normal
+            color: #000000
+        &:last-child
+            span
+                width: 106px
+.modal_sizes_container
+    display: flex
+    justify-content: left
+    max-width: 400px
+    flex-wrap: wrap
+
+.view-changes
+    background-color: #FFFFFF !important
+.approved_file
+    text-align: left
+    margin-top: 23px
+    img
+        margin-right: 10px
+    .item
+        margin-top: 23px
+        display: flex
+    .download
+        text-transform: uppercase
+        text-decoration: underline
+        font-size: 12px
+        font-weight: 600
+        font-style: normal
+        font-stretch: normal
+        line-height: normal
+        letter-spacing: 0.5px
+        color: #4099d5
+    .offer_detail
+        line-height: 0.5em
+    .title
+        font-size: 16px
+        font-weight: 600
+        font-style: normal
+        font-stretch: normal
+        line-height: normal
+        letter-spacing: 0.6px
+        color: #33333a
+
+.cost_change
+    font-size: 12px
+    font-weight: 600
+    font-style: normal
+    font-stretch: normal
+    line-height: normal
+    letter-spacing: 0.5px
+    color: #4099d5 !important
+    text-decoration: underline !important
+    text-transform: uppercase
+    cursor: pointer
+.changed
+    background-color: #eef0f5
+    border-radius: 26.5px
+    width: 254px
+    margin: 12px auto
+    padding: 3px
+    font-size: 12px
+    font-weight: normal
+    font-style: normal
+    font-stretch: normal
+    line-height: normal
+    letter-spacing: 0.5px
+    color: #33333a
+.alert_danger
+    background-color: #f2dede
+    border: 1px solid #ebcccc
+    border-radius: 5px
+    color: #a94442
+    width: 100%
+    height: 52px
+    padding: 15px
+
+#rating_bar
+    width: 100%
+    //height: 50px
+    margin-top: 10px
+
+#rating_bar > span:before
+    content: url("../../../../../assets/images/star-raiting.svg")
+    color: #c7c5c5
+    cursor: pointer
+    //font-size: 3em
+    margin-right: 4px
+
+#rating_bar:hover > span:before
+    content: url("../../../../../assets/images/star-raiting-hover.svg")
+
+#rating_bar > span:hover ~ span:before
+    content: url("../../../../../assets/images/star-raiting.svg")
+
+.user-rating 
+    display: block
+    width: 44px
+    margin-top: 10px
+    height: 20px
+    border-radius: 11.5px
+    background-color: #33333a
+    line-height: 20px 
+    font-size: 12px
+    font-weight: normal
+    font-style: normal
+    font-stretch: normal
+    letter-spacing: normal
+    color: #ffffff
+    text-align: center
+    i 
+        font-size: 10px
+        position: relative
+        display: inline-block
+        top: -1px
+
+.product 
+    .user-rating 
+        display: inline-block 
+        margin-top: 0
+        position: relative 
+        top: -2px

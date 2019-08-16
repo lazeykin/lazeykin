@@ -1,0 +1,435 @@
+section 
+    // background-color: #ededed
+    min-height: 100vh
+    height: 100%
+    position: relative
+    // padding-bottom: 164px
+    display: flex 
+    flex-direction: column
+    justify-content: space-between
+    
+table 
+    width: 100%
+    margin-bottom: 30px
+    background-color: white
+    thead 
+        tr 
+            th
+                padding-top: 23px
+                padding-bottom: 14px
+                font-size: 13px
+                font-weight: 600 
+                font-style: normal 
+                font-stretch: normal 
+                line-height: normal 
+                letter-spacing: 1px 
+                color: #afafaf 
+                text-transform: uppercase
+                &.status
+                    padding-left: 40px !important
+                &.result
+                    padding-left: 60px !important
+                &:first-child 
+                    // padding-left: calc((100vw - 1260px) / 2)
+                    display: block 
+                    margin-left: 95px
+                &:last-child 
+                    // padding-right: calc((100vw - 1260px) / 2)
+    tbody 
+        background-color: #ffffff
+        margin: 0 -200px
+        td 
+            font-size: 14px
+            font-weight: 600 
+            font-style: normal 
+            font-stretch: normal 
+            line-height: normal 
+            letter-spacing: 1.1px 
+            color: #4b4b52   
+            padding: 26px 0
+            position: relative
+            &.errors 
+                letter-spacing: 1.4px
+                padding-left: 60px !important
+            label 
+                position: relative
+                height: 24px 
+                margin-bottom: 0
+                margin-right: 0
+                top: -3px
+                margin-right: 44px
+                padding-left: 20px
+                vertical-align: middle
+            &:first-child 
+                width: 230px
+                padding-left: 33px
+                // padding-left: calc((100vw - 1260px) / 2)
+
+            &:last-child 
+                // padding-right: calc((100vw - 1260px) / 2)
+            .complete, .uploaded
+                font-size: 14px  
+                font-weight: 600  
+                font-style: normal  
+                font-stretch: normal  
+                line-height: normal  
+                letter-spacing: 1.4px  
+                color: #43b05c  
+                text-transform: uppercase
+                border: none
+            .uploaded 
+                color: black
+            &.control-buttons 
+                text-align: right
+                button 
+                    text-decoration: underline
+                    line-height: normal
+                    letter-spacing: 1.4px
+                    font-weight: 600
+                    color: #4099d5
+                    font-size: 14px
+                    max-width: 170px
+                    &.draft 
+                        margin-left: 25px
+                    &.cancel
+                        color: #d0021b
+                        margin-left: 25px
+                    &.delete 
+                        background-image: url('../../../../../assets/images/trash-can.svg')
+                        background-repeat: no-repeat
+                        background-position: center center
+                        margin-left: 25px
+                        height: 20px
+                        width: 20px
+                        position: relative
+                        top: 3px
+                        margin-right: 15px
+                        &:disabled 
+                            background-image: url('../../../../../assets/images/trash-can-disabled.svg')
+                            cursor: auto
+                    &:disabled 
+                        color: #edeff4 
+                        cursor: none 
+                        &:hover 
+                            text-decoration: underline
+                    &:hover 
+                        text-decoration: none 
+                span 
+                    display: inline-block
+                    line-height: normal
+                    letter-spacing: 1.4px
+                    font-weight: 600
+                    color: #4099d5
+                    font-size: 14px
+                    text-transform: uppercase
+                    padding: 0 6px
+                    line-height: 24px
+                    margin-left: -15px
+                    &.draft 
+                        margin-left: 25px
+
+
+        tr:not(:first-child)
+            td 
+                border-top: 2px solid rgba(0,0,0,0.05) 
+        tr:last-child 
+            td 
+                padding-bottom: 50px
+
+button 
+    background-color: transparent 
+    border: none
+    border-radius: 2px
+    text-transform: uppercase
+    font-size: 12px 
+    font-weight: 500 
+    font-style: normal 
+    font-stretch: normal 
+    text-align: center 
+    transition: .2s ease all
+    &:hover 
+        cursor: pointer
+    &:focus 
+        outline: none
+
+.total 
+    width: 100% 
+    box-shadow: 0 -2px 4px 0 rgba(184, 191, 211, 0.5)
+    padding: 20px 0
+    height: 80px
+    background-color: #fff
+    position: sticky
+    z-index: 10
+    bottom: 0
+    .container 
+        display: flex 
+        flex-direction: row 
+        justify-content: space-between
+    span 
+        font-size: 18px
+        font-weight: 600 
+        font-style: normal 
+        font-stretch: normal 
+        line-height: normal 
+        letter-spacing: 1.8px 
+        color: #515356 
+        text-transform: uppercase
+        align-self: center
+    .control-buttons 
+        button 
+            height: 40px
+            border: 1px solid #4099d5
+            color: #4099d5
+            line-height: 1.67 
+            letter-spacing: 2px 
+            font-weight: 600
+            &.cancel 
+                width: 106px 
+                margin-right: 24px
+            &.draft 
+                width: 135px 
+                margin-right: 24px
+            &.cancel, &.draft
+                &:hover 
+                    background-color: #e6f2fa
+            &.publish
+                width: 170px
+                color: #fff 
+                background-color: #4099d5
+                &:hover 
+                    background-color: #277db6
+            &.delete 
+                border-color: #d0021b
+                color: #d0021b
+                width: 106px 
+                margin-right: 24px
+                &:hover 
+                    background-color: #f9e5e5
+            &:disabled 
+                background-color: #edeff4
+                border: none
+                color: #ffffff
+                &:hover 
+                    background-color: #edeff4
+
+
+.progress 
+    background-color: #fff
+    padding: 1px 
+    position: relative
+    &.error
+    &.completed 
+        border: none !important
+        height: auto
+        width: auto
+    .progress-value 
+        background-color: #4099d5 
+        width: 60% 
+        height: 100%
+        color: #fff
+        font-size: 8px
+        letter-spacing: 0.9px
+        line-height: 12px
+        vertical-align: middle
+        padding-right: 2px
+        span 
+            position: absolute
+            width: 100%
+            left: 0
+            right: 0
+            margin-right: auto 
+            margin-left: auto
+            line-height: 16px
+            &.blue 
+                color: #4099d5 
+            &.white 
+                color: #fff
+        &.error 
+            width: 100%
+            text-transform: uppercase
+            background-color: #fff
+            text-align: left
+            font-size: 14px
+            font-weight: 600
+            font-style: normal
+            font-stretch: normal
+            line-height: normal
+            letter-spacing: 1.4px
+            color: #d0021b
+.display 
+    display: block !important
+.report-box 
+    width: 127px 
+    height: 42px
+    background-color: #737373
+    position: relative
+    left: -28%
+    top: 15px
+    border-radius: 3px
+    font-size: 10px  
+    font-weight: 600  
+    font-style: normal  
+    font-stretch: normal  
+    line-height: normal  
+    letter-spacing: normal  
+    text-align: center  
+    color: #ffffff 
+    text-align: center
+    padding: 8px 25px
+    a 
+        color: #fff 
+        text-decoration: underline
+        &:hover 
+            text-decoration: none 
+    &:after, &:before 
+        bottom: 100%
+        left: 50%
+        border: solid transparent 
+        content: ''
+        height: 0 
+        width: 0 
+        position: absolute
+        pointer-events: none
+    &:after 
+        border-bottom-color: #737373 
+        border-width: 7px 
+        margin-left: -7px
+    &:before 
+        border-bottom-color: #737373 
+        border-width: 8px 
+        margin-left: -8px
+
+.report-icon 
+    height: 14px 
+    width: 14px 
+    border-radius: 100%
+    background-image: url(../../../../../assets/images/info-icon.svg)
+    background-size: contain
+    background-position: center center
+
+td 
+    &.date 
+        width: 150px
+    &.status 
+        width: 150px
+        padding-left: 40px !important
+
+// app-pagination 
+//     float: right
+//     margin-right: 300px
+
+app-pagination
+    position: relative
+    right: 0
+    bottom: 0
+
+.error-report 
+    display: inline-block
+    margin-left: 10px
+    position: relative
+    img 
+        height: 14px 
+        width: 14px 
+        &:hover 
+            cursor: pointer
+    .report-wrapper    
+        // display: none
+        position: absolute
+        top: 35px 
+        right: -55px
+        background: #88b7d5
+        min-height: 42px 
+        width: 127px
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5)
+        background-color: #737373
+        border-radius: 3px
+        font-size: 10px
+        font-weight: 600
+        font-style: normal
+        font-stretch: normal
+        line-height: normal
+        letter-spacing: normal
+        text-align: center
+        color: #ffffff
+        padding: 8px 25px
+        transition: .2s all ease
+        z-index: 8
+        a 
+            color: #fff 
+        &:after 
+            bottom: 100%
+            left: 50%
+            border: solid transparent 
+            content: " " 
+            height: 0 
+            width: 0 
+            position: absolute 
+            pointer-events: none 
+            border-color: rgba(136, 183, 213, 0) 
+            border-bottom-color: #737373
+            border-width: 13px 
+            margin-left: -13px 
+
+.file-name 
+    display: inline-block
+    max-width: 130px
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
+.file-created
+    font-size: 10px
+    font-weight: normal
+    font-style: normal
+    font-stretch: normal
+    line-height: normal
+    letter-spacing: 0.9px
+    color: #9b9b9b
+    padding-left: 64px
+    margin-top: -5px
+
+.custom-control.fill-checkbox .fill-control-indicator 
+    border: solid 1px #b8bfd3
+    width: 24px
+    height: 24px
+    left: 0
+
+.custom-control.fill-checkbox .fill-control-input:checked ~ .fill-control-indicator 
+    background-color: #3f99d4
+    border-color: #3f99d4
+
+.table-wrapper 
+    padding: 0 21px
+    background-color: white
+
+.pagination_holder
+    text-align: right
+    padding: 20px
+.loading
+    font-size: 12px
+    font-weight: 600
+    font-style: normal
+    font-stretch: normal
+    line-height: normal
+    letter-spacing: normal
+    color: #33333a
+.loading:after
+    overflow: hidden
+    display: inline-block
+    vertical-align: bottom
+    -webkit-animation: ellipsis steps(4,end) 900ms infinite
+    animation: ellipsis steps(4,end) 900ms infinite
+    content: "\2026" /* ascii code for the ellipsis character */
+    width: 0px
+
+
+@keyframes ellipsis
+    to
+        width: 20px
+
+
+
+@-webkit-keyframes ellipsis
+    to
+        width: 20px
+

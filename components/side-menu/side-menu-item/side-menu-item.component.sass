@@ -1,0 +1,55 @@
+@import "~app/sass_inc/colors"
+
+.material-icons
+    vertical-align: text-bottom
+    font-size: 18px
+    line-height: normal
+    &:hover
+        cursor: pointer
+
+li
+    text-transform: uppercase
+    margin: 10px 0
+    outline: none
+
+    ul
+        padding: 0 0 10px 0
+        position: relative
+        margin: 0 auto
+        text-align: left
+        margin-top: -7px
+
+        &.close
+            display: none
+
+    a
+        font-size: 14px  
+        font-weight: 600  
+        font-style: normal  
+        font-stretch: normal  
+        line-height: normal  
+        letter-spacing: 1px  
+        text-align: justify  
+        color: #33333a  
+        padding: 10px 0 10px 0px
+        text-decoration: none
+        cursor: pointer
+        display: inline-block
+        width: 100%
+        outline: none
+        max-width: 220px 
+        overflow: hidden 
+        white-space: nowrap
+        text-overflow: ellipsis
+        margin-left: -350px
+        padding-left: 350px
+        box-sizing: content-box
+        &:hover, &.active
+            background-color: $bg-gray
+
+li.no_children 
+    margin: 0
+    height: 39px
+    a
+        &:hover, &.active
+            background-color: $bg-gray

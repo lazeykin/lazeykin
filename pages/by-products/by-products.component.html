@@ -1,0 +1,78 @@
+<div class="contact-filters">
+    <button type="button" [ngClass]="{'active': statusFilter === 'all'}" (click)="onStatusFilter('all')">{{'FILTER_ALL' | translate}}</button>
+    <button type="button" [ngClass]="{'active': statusFilter === 'read'}" (click)="onStatusFilter('read')">{{'FILTER_READ' | translate}}</button>
+    <button type="button" [ngClass]="{'active': statusFilter === 'unread'}" (click)="onStatusFilter('unread')">{{'FILTER_NOT_READ' | translate}}</button>
+</div>
+<div class="panel-filters">
+    <app-select-filter *ngIf="orderTypeTranslated"
+        class="message-status" 
+        [options]="orderTypeTranslated" 
+        label=""
+        (filter)="onOrderFilter($event)" >
+    </app-select-filter>
+    <div class="input-group search">
+        <input [(ngModel)]="searchText" type="text" class="form-control" placeholder="{{'PLACEHOLDER_SEARCH_BY_PRODUCT' | translate}}"
+               (keyup.enter)="onSearchClick()" maxlength="120">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" (click)="onSearchClick()"><img src="../../../../../assets/images/search.svg" alt=""></button>
+        </div>
+    </div>
+    <a *ngIf="searchText" class="search-clear" (click)="onClearFiltersClick()">{{'BTN_CLEAR_ALL' | translate}}</a>
+</div>
+
+<app-full-page-spinner *ngIf="isLoading"></app-full-page-spinner>
+
+<table *ngIf="!isLoading">
+    <thead>
+        <tr>
+            <th></th>
+            <th>{{'TABLE_PRODUCT' | translate}}</th>
+            <th></th>
+            <th>{{'TABLE_CONTACT' | translate}}</th>
+            <th>{{'TABLE_MESSAGE' | translate}}</th>
+            <th>{{'TABLE_DATE' | translate}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let dialog of dialogs"
+            [class]="dialog.unread_messages_count == 0?'read':'unread'"
+            [routerLink]="getDialogLink(dialog)">
+            <td><div></div></td>
+            <td class="product-img">
+                <div>
+                    <img *ngIf="!dialog.product.default_image.thumbnail_200" [src]="dialog.product.default_image.url" />
+                    <img *ngIf="dialog.product.default_image.thumbnail_200" [src]="dialog.product.default_image.thumbnail_200" />
+                </div>
+            </td>
+            <td class="product-name">
+                <a [routerLink]="getProductLink(dialog)">{{ dialog.product.title }}</a><br/>
+                <span>Ref.{{ dialog.product.ref_number }}</span>
+                <div class="customerRef">
+                    CRef. {{dialog.product.customer_ref_number ? dialog.product.customer_ref_number : '-'}}
+                </div>
+            </td>
+            <td class="contact">
+                <a *ngIf="getDialogOtherUser(dialog)">{{getDialogOtherUser(dialog).full_name}}</a><br/>
+                <span *ngIf="getDialogOtherUser(dialog)">{{getDialogOtherUser(dialog).company_name}}</span>
+            </td>
+            <td class="message">
+                <p *ngIf="dialog.last_message">
+                    {{ getMessageText(dialog.last_message) }}
+                </p>
+            </td>
+            <td class="date">
+                <span *ngIf="dialog.last_message">{{dialog.last_message.date_created | date : 'dd/MM/yyyy\'\n\'HH:mm' }}</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<div class="placeholder-text" *ngIf="message && !isLoading">
+    <span>{{message}}</span>
+</div>
+
+
+<div [ngClass]="'pagination_holder ' + ((isLoading || (message && !isLoading))?'hidden':'')" >
+    <app-pagination (pageChanged)="onPageChanged($event)"></app-pagination>
+</div>

@@ -1,0 +1,89 @@
+<section>
+    <!-- <form 
+        name="form"
+        [formGroup]="form"
+        (ngSubmit)="uploadDocument()"
+        validate>
+        <label>{{'LABEL_DOCUMENT_NAME' | translate}}</label>
+        <app-input-text
+            formControlName="name"
+            label=""
+            placeholder="">
+        </app-input-text> -->
+        <div class="title-container">
+            <h2>{{'TEXT_DOCUMENTS' | translate}}</h2>
+            <button type="button" class="upload-doc" (click)="file.click()">
+                <img src="../../../../../assets/images/file-image-regular.svg"> {{'BTN_UPLOAD_DOCUMENT' | translate}}
+            </button>
+            <input 
+                id="file"
+                type="file"
+                (change)="readDocument($event)"
+                accept=".pdf, .txt, .doc, .docx, .xls, .xlsx .png, .jpg, .jpeg"
+                #file/>
+        </div>
+        <!-- <button type="submit" class="add">
+            {{'BTN_ADD_NEW_DOCUMENT' | translate}}
+        </button> -->
+        <!-- <span *ngIf="fileError" class="error">{{'ERR_NO_FILE' | translate}}</span>
+    </form> -->
+    <div class="table-wrapper">
+        <div class="no-files" *ngIf="!files.length && !isLoading">
+            {{'ERR_NO_DOCUMENTS' | translate}}
+        </div>
+        <app-full-page-spinner *ngIf="isLoading"></app-full-page-spinner>
+        <table *ngIf="files.length && !isLoading">
+            <tr *ngFor="let file of files; let i = index">
+                <td class="doc-name"><div><a target="_blank" [href]="getFileUrl(file.file)">{{getFileName(file.file)}}</a></div></td>
+                <td class="doc-date">{{file.date_uploaded | date: 'dd/MM/yyyy'}}</td>
+                <td class="doc-del"><img (click)="deleteDocument(file.id)" class="remove" src="../../../../../assets/images/deleteIconSimple.png" alt=""></td>
+            </tr>
+        </table>
+    </div>
+</section>
+<modal id="custom-modal-success">
+    <div class="modal">
+        <div class="modal-body">            
+        <button (click)="closeModal('custom-modal-success');"
+                class="closeModal">
+        </button>
+        <div class="content">
+            <div class="image">
+            <img src="assets/images/icon-success.svg"
+                    alt="logo">
+                    <div class="message">
+                        {{'TEXT_SUCCESS' | translate}}!<br/>
+                        {{'MODAL_DOCUMENT_UPLOADED' | translate}}
+                    </div>
+            </div>
+            <div class="buttons">
+                <button (click)="closeModal('custom-modal-success')">{{'BTN_OK' | translate}}</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="modal-background"></div>
+</modal>
+<modal id="custom-modal-error">
+    <div class="modal">
+        <div class="modal-body">            
+        <button (click)="closeModal('custom-modal-error');"
+                class="closeModal">
+        </button>
+        <div class="content">
+            <div class="image">
+            <img src="assets/images/error.svg"
+                    alt="logo">
+                    <div class="message">
+                        {{'TEXT_ERROR' | translate}}!<br/> 
+                        {{'ERR_DOCUMENT_UPLOAD' | translate}}
+                    </div>
+            </div>
+            <div class="buttons">
+                <button (click)="closeModal('custom-modal-error')">{{'BTN_OK' | translate}}</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="modal-background"></div>
+</modal>
